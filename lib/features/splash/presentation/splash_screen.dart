@@ -7,7 +7,7 @@ import 'package:shopping_app/core/theme/dimens.dart';
 import 'package:shopping_app/core/utils/app_navigator.dart';
 import 'package:shopping_app/core/utils/check_device_size.dart';
 import 'package:shopping_app/core/widgets/app_scaffold.dart';
-import 'package:shopping_app/features/home/presentation/widgets/home_tab.dart';
+import 'package:shopping_app/features/auth/presentation/bloc/cubits/auth_gate.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(milliseconds: 5000), () {
-      appPushReplacement(context, HomeTab());
+      appPushReplacement(context, const AuthGate());
     });
   }
 

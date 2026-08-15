@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_app/core/gen/assets.gen.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
@@ -10,12 +11,14 @@ import 'package:shopping_app/core/widgets/app_svg_viewer.dart';
 import 'package:shopping_app/core/widgets/bordered_container.dart';
 import 'package:shopping_app/core/widgets/general_app_bar.dart';
 import 'package:shopping_app/core/widgets/user_profile_image_widget.dart';
+import 'package:shopping_app/features/auth/presentation/bloc/cubits/auth_cubit.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authCubit = context.read<AuthCubit>();
     final appColors = context.theme.appColors;
     final appTypography = context.theme.appTypography;
     return AppScaffold(
@@ -133,7 +136,9 @@ class ProfileScreen extends StatelessWidget {
             ),
             BorderedContainer(
               child: AppListTile(
-                onTap: () {},
+                onTap: () {
+                  authCubit.logout();
+                },
                 title: 'Log out',
                 leadingIconPath: Assets.icons.logout,
                 padding: EdgeInsets.zero,

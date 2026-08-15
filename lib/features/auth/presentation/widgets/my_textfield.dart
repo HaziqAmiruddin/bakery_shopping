@@ -18,6 +18,8 @@ class MyTextfield extends StatelessWidget {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
+        // filled: true,
+        // fillColor: colorOwn.white,
         //border unselect
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: colorOwn.primaryShade1),

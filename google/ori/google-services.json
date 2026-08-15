@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "53883899149",
+    "project_id": "haziq-app-50d59",
+    "storage_bucket": "haziq-app-50d59.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53883899149:android:302a4cf41c8915ce0d3444",
+        "android_client_info": {
+          "package_name": "com.example.shopping_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-eZ1lnY5Ybr9WUct80fqbF7jWQfvwEA4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
