@@ -6,11 +6,13 @@ import 'package:shopping_app/core/widgets/app_svg_viewer.dart';
 class PasswordTextfield extends StatefulWidget {
   final TextEditingController? controller;
   final String hintText;
+  final String? Function(String?)? validator;
 
   const PasswordTextfield({
     super.key,
     required this.controller,
     required this.hintText,
+    this.validator,
   });
 
   @override
@@ -23,9 +25,10 @@ class _PasswordTextfieldState extends State<PasswordTextfield> {
   @override
   Widget build(BuildContext context) {
     final colorOwn = context.theme.appColors;
-    return TextField(
+    return TextFormField(
       controller: widget.controller,
       obscureText: _obscure,
+      validator: widget.validator,
       decoration: InputDecoration(
         hintText: widget.hintText,
         enabledBorder: OutlineInputBorder(
@@ -35,6 +38,14 @@ class _PasswordTextfieldState extends State<PasswordTextfield> {
         //border select
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: colorOwn.primary),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: colorOwn.error),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: colorOwn.error),
           borderRadius: BorderRadius.circular(12),
         ),
         suffixIcon: IconButton(

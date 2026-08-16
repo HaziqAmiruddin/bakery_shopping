@@ -4,6 +4,7 @@ import 'package:shopping_app/core/gen/assets.gen.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
 import 'package:shopping_app/core/utils/sized_context.dart';
+import 'package:shopping_app/core/utils/validator_form_field.dart';
 import 'package:shopping_app/core/widgets/app_button.dart';
 import 'package:shopping_app/core/widgets/app_scaffold.dart';
 import 'package:shopping_app/core/widgets/app_svg_viewer.dart';
@@ -25,8 +26,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final nameController = TextEditingController();
   final pwController = TextEditingController();
   final confirmController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  // void register() {
+  //   final String name = nameController.text;
+  //   final String email = emailController.text;
+  //   final String pw = pwController.text;
+  //   final String confirmpw = confirmController.text;
+
+  //   final authCubit = context.read<AuthCubit>();
+
+  //   if (email.isNotEmpty &&
+  //       name.isNotEmpty &&
+  //       pw.isNotEmpty &&
+  //       confirmpw.isNotEmpty) {
+  //     if (pw == confirmpw) {
+  //       authCubit.register(name, email, pw);
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text("Passwords Do Not Match !!")),
+  //       );
+  //     }
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("Please Complete All Field !!")),
+  //     );
+  //   }
+  // }
 
   void register() {
+    if (!formKey.currentState!.validate()) return;
+
     final String name = nameController.text;
     final String email = emailController.text;
     final String pw = pwController.text;
@@ -34,22 +64,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     final authCubit = context.read<AuthCubit>();
 
-    if (email.isNotEmpty &&
-        name.isNotEmpty &&
-        pw.isNotEmpty &&
-        confirmpw.isNotEmpty) {
-      if (pw == confirmpw) {
-        authCubit.register(name, email, pw);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Passwords Do Not Match !!")),
-        );
-      }
-    } else {
+    if (pw != confirmpw) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please Complete All Field !!")),
+        const SnackBar(content: Text("Passwords Do Not Match !!")),
       );
+      return;
     }
+
+    authCubit.register(name, email, pw);
   }
 
   @override
@@ -68,66 +90,83 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return AppScaffold(
       appBar: AppBar(title: Text("REGISTER"), centerTitle: true),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AppSvgViewer(
-              Assets.icons.userAdd,
-              width: 80,
-              color: colorOwn.primary,
-            ),
-            const SizedBox(height: 25),
-            Text("SHOPPING APP", style: textOwn.displaySmall),
-            const SizedBox(height: 15),
-            Text("Let's Create an Account", style: textOwn.headlineMedium),
-            const SizedBox(height: 25),
-            MyTextfield(controller: nameController, hintText: "name"),
-            const SizedBox(height: 25),
-            //email
-            MyTextfield(controller: emailController, hintText: "Email"),
-            const SizedBox(height: 25),
-            //password
-            PasswordTextfield(hintText: "Password", controller: pwController),
-            const SizedBox(height: 25),
-            //confirm password
-            PasswordTextfield(
-              hintText: "Confrim Password",
-              controller: confirmController,
-            ),
-            const SizedBox(height: 25),
-            SizedBox(
-              width: context.widthPx,
-              height: 60,
-              child: AppButton(
-                title: "Register New User",
-                textStyle: textOwn.bodyLarge,
-                onPressed: register,
-                margin: EdgeInsets.zero,
-                padding: WidgetStateProperty.all<EdgeInsets>(
-                  EdgeInsets.symmetric(horizontal: Dimens.padding),
-                ),
+        child: Form(
+          key: formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AppSvgViewer(
+                Assets.icons.userAdd,
+                width: 80,
+                color: colorOwn.primary,
               ),
-            ),
-            SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Already have an account ? ",
-                  style: textOwn.labelLarge.copyWith(color: colorOwn.gray4),
-                ),
-                GestureDetector(
-                  onTap: widget.togglePages,
-                  child: Text(
-                    "Login Now",
-                    style: textOwn.labelLarge.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+              const SizedBox(height: 25),
+              Text("SHOPPING APP", style: textOwn.displaySmall),
+              const SizedBox(height: 15),
+              Text("Let's Create an Account", style: textOwn.headlineMedium),
+              const SizedBox(height: 25),
+              MyTextfield(
+                controller: nameController,
+                hintText: "name",
+                validator: validateName,
+              ),
+              const SizedBox(height: 25),
+              //email
+              MyTextfield(
+                controller: emailController,
+                hintText: "Email",
+                validator: validateEmail,
+              ),
+              const SizedBox(height: 25),
+              //password
+              PasswordTextfield(
+                hintText: "Password",
+                controller: pwController,
+                validator: validateSignUpPassword,
+              ),
+              const SizedBox(height: 25),
+              //confirm password
+              PasswordTextfield(
+                hintText: "Confrim Password",
+                controller: confirmController,
+                validator: validateSignUpPassword,
+              ),
+              const SizedBox(height: 25),
+              SizedBox(
+                width: context.widthPx,
+                height: 60,
+                child: AppButton(
+                  title: "Register New User",
+                  textStyle: textOwn.bodyLarge,
+                  onPressed: register,
+                  margin: EdgeInsets.zero,
+                  padding: WidgetStateProperty.all<EdgeInsets>(
+                    EdgeInsets.symmetric(horizontal: Dimens.padding),
                   ),
                 ),
-              ],
-            ),
-          ],
+              ),
+              SizedBox(height: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Already have an account ? ",
+                    style: textOwn.labelLarge.copyWith(color: colorOwn.gray4),
+                  ),
+                  GestureDetector(
+                    onTap: widget.togglePages,
+                    child: Text(
+                      "Login Now",
+                      style: textOwn.labelLarge.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

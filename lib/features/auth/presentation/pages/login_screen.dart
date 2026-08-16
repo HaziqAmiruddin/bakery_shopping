@@ -6,6 +6,7 @@ import 'package:shopping_app/core/theme/colors_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
 import 'package:shopping_app/core/utils/app_navigator.dart';
 import 'package:shopping_app/core/utils/sized_context.dart';
+import 'package:shopping_app/core/utils/validator_form_field.dart';
 import 'package:shopping_app/core/widgets/app_button.dart';
 import 'package:shopping_app/core/widgets/app_scaffold.dart';
 import 'package:shopping_app/core/widgets/app_svg_viewer.dart';
@@ -27,20 +28,30 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final pwController = TextEditingController();
   late final authCubit = context.read<AuthCubit>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  // void login() {
+  //   final String email = emailController.text;
+  //   final String pw = pwController.text;
+
+  //   if (email.isNotEmpty && pw.isNotEmpty) {
+  //     authCubit.login(email, pw);
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text("Please Enter Email & Password Correctly"),
+  //       ),
+  //     );
+  //   }
+  // }
 
   void login() {
+    if (!formKey.currentState!.validate()) return;
+
     final String email = emailController.text;
     final String pw = pwController.text;
 
-    if (email.isNotEmpty && pw.isNotEmpty) {
-      authCubit.login(email, pw);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please Enter Email & Password Correctly"),
-        ),
-      );
-    }
+    authCubit.login(email, pw);
   }
 
   void openForgetPaswordBox() {
@@ -82,95 +93,118 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void dispose() {
+    emailController.dispose();
+    pwController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colorOwn = context.theme.appColors;
     final textOwn = context.theme.appTypography;
     return AppScaffold(
       appBar: AppBar(title: Text("SIGN IN"), centerTitle: true),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AppSvgViewer(Assets.icons.user, width: 80, color: colorOwn.primary),
-            const SizedBox(height: 25),
-            Text("SHOPPING APP", style: textOwn.displaySmall),
-            const SizedBox(height: 25),
-            //email
-            MyTextfield(controller: emailController, hintText: "Email"),
-            const SizedBox(height: 25),
-            //password
-            PasswordTextfield(hintText: "Password", controller: pwController),
-            const SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onTap: () => openForgetPaswordBox(),
-                  child: Text(
-                    "Forget Password?",
-                    style: textOwn.labelLarge.copyWith(
-                      color: colorOwn.gray2,
-                      fontWeight: FontWeight.bold,
+        child: Form(
+          key: formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AppSvgViewer(
+                Assets.icons.user,
+                width: 80,
+                color: colorOwn.primary,
+              ),
+              const SizedBox(height: 25),
+              Text("SHOPPING APP", style: textOwn.displaySmall),
+              const SizedBox(height: 25),
+              //email
+              MyTextfield(
+                controller: emailController,
+                hintText: "Email",
+                validator: validateEmail,
+              ),
+              const SizedBox(height: 25),
+              //password
+              PasswordTextfield(
+                hintText: "Password",
+                controller: pwController,
+                validator: validateLoginPassword,
+              ),
+              const SizedBox(height: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () => openForgetPaswordBox(),
+                    child: Text(
+                      "Forget Password?",
+                      style: textOwn.labelLarge.copyWith(
+                        color: colorOwn.gray2,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 25),
-            SizedBox(
-              width: context.widthPx,
-              height: 60,
-              child: AppButton(
-                title: "LOGIN",
-                textStyle: textOwn.bodyLarge,
-                onPressed: login,
-                margin: EdgeInsets.zero,
-                padding: WidgetStateProperty.all<EdgeInsets>(
-                  EdgeInsets.symmetric(horizontal: Dimens.padding),
+                ],
+              ),
+              const SizedBox(height: 25),
+              SizedBox(
+                width: context.widthPx,
+                height: 60,
+                child: AppButton(
+                  title: "LOGIN",
+                  textStyle: textOwn.bodyLarge,
+                  onPressed: login,
+                  margin: EdgeInsets.zero,
+                  padding: WidgetStateProperty.all<EdgeInsets>(
+                    EdgeInsets.symmetric(horizontal: Dimens.padding),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 25),
-            Row(
-              children: [
-                Expanded(child: Divider()),
-                Text("Or Sign In With"),
-                Expanded(child: Divider()),
-              ],
-            ),
-            SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GoogleSignInButton(
-                  onTap: () async {
-                    authCubit.signInWithGoogle();
-                    //print("pressed");
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 25),
+              SizedBox(height: 25),
+              Row(
+                children: [
+                  Expanded(child: Divider()),
+                  Text("Or Sign In With"),
+                  Expanded(child: Divider()),
+                ],
+              ),
+              SizedBox(height: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GoogleSignInButton(
+                    onTap: () async {
+                      authCubit.signInWithGoogle();
+                      //print("pressed");
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 25),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Don't have an account ? ",
-                  style: textOwn.labelLarge.copyWith(color: colorOwn.gray4),
-                ),
-                GestureDetector(
-                  onTap: widget.togglePages,
-                  child: Text(
-                    "Register Now",
-                    style: textOwn.labelLarge.copyWith(
-                      fontWeight: FontWeight.bold,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don't have an account ? ",
+                    style: textOwn.labelLarge.copyWith(color: colorOwn.gray4),
+                  ),
+                  GestureDetector(
+                    onTap: widget.togglePages,
+                    child: Text(
+                      "Register Now",
+                      style: textOwn.labelLarge.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
