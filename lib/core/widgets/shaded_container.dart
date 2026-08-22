@@ -43,7 +43,7 @@ class ShadedContainer extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: context.theme.appColors.black.withValues(alpha: 0.1),
+            color: context.theme.appColors.primaryShade2,
             blurRadius: 10,
             offset: Offset(0, 1),
           ),

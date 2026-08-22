@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopping_app/core/inject/injection.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/features/auth/data/firebase_auth_repo.dart';
 import 'package:shopping_app/features/auth/presentation/bloc/cubits/auth_cubit.dart';
+import 'package:shopping_app/features/notification/presentation/bloc/notification_cubit.dart';
 import 'package:shopping_app/features/splash/presentation/splash_screen.dart';
 
 class ShoppingApp extends StatelessWidget {
@@ -17,6 +19,10 @@ class ShoppingApp extends StatelessWidget {
         BlocProvider<AuthCubit>(
           create: (context) =>
               AuthCubit(authRepo: firebaseAuthRepo)..checkAuth(),
+        ),
+
+        BlocProvider<NotificationCubit>(
+          create: (_) => getIt<NotificationCubit>(),
         ),
       ],
       child: MaterialApp(

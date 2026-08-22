@@ -74,26 +74,6 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   AppListTile(
                     onTap: () {},
-                    title: 'Language',
-                    leadingIconPath: Assets.icons.languageSquare,
-                    padding: EdgeInsets.zero,
-                  ),
-                  AppListTile(
-                    onTap: () {},
-                    title: 'Notification',
-                    leadingIconPath: Assets.icons.notification,
-                    trailing: Transform.scale(
-                      scale: 0.7,
-                      child: CupertinoSwitch(
-                        value: true,
-                        onChanged: (final value) {},
-                        activeTrackColor: appColors.primary,
-                      ),
-                    ),
-                    padding: EdgeInsets.zero,
-                  ),
-                  AppListTile(
-                    onTap: () {},
                     title: 'Dark theme',
                     leadingIconPath: Assets.icons.moon,
                     trailing: Transform.scale(

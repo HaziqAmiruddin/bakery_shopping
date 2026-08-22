@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/core/gen/assets.gen.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
+import 'package:shopping_app/core/utils/app_navigator.dart';
 import 'package:shopping_app/core/utils/sized_context.dart';
 import 'package:shopping_app/core/widgets/app_icon_button.dart';
 import 'package:shopping_app/core/widgets/app_search_bar.dart';
+import 'package:shopping_app/features/map/presentation/pages/map_screen.dart';
+import 'package:shopping_app/features/notification/presentation/pages/notification_screen.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -17,11 +20,23 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       children: [
         AppBar(
           backgroundColor: colorsOwn.primary,
-          actions: [AppIconButton(iconPath: Assets.icons.location)],
+          actions: [
+            AppIconButton(
+              iconPath: Assets.icons.location,
+              onPressed: () {
+                appPush(context, MapScreen());
+              },
+            ),
+          ],
           title: Row(
             spacing: Dimens.padding,
             children: [
-              AppIconButton(iconPath: Assets.icons.notification),
+              AppIconButton(
+                iconPath: Assets.icons.notification,
+                onPressed: () {
+                  appPush(context, NotificationScreen());
+                },
+              ),
               Column(
                 spacing: Dimens.padding,
                 crossAxisAlignment: CrossAxisAlignment.start,
