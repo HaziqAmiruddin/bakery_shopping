@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shopping_app/features/map/data/location_data_sources.dart';
+import 'package:shopping_app/features/map/domain/repository/location_repo.dart';
+import 'package:shopping_app/features/map/domain/usecases/get_address_from_coordinates.dart';
+import 'package:shopping_app/features/map/domain/usecases/get_coordinates_from_address.dart';
+import 'package:shopping_app/features/map/domain/usecases/get_current_location.dart';
+import 'package:shopping_app/features/map/presentation/bloc/location_bloc.dart';
 import 'package:shopping_app/features/notification/data/datasources/notification_datasources.dart';
 import 'package:shopping_app/features/notification/data/repo/notification_repository_impl.dart';
 import 'package:shopping_app/features/notification/domain/repo/notification_repository.dart';
@@ -47,6 +53,31 @@ void setupDependencies() {
     () => NotificationCubit(
       createLoginNotification: getIt<CreateLoginNotification>(),
       getNotifications: getIt<GetNotifications>(),
+    ),
+  );
+
+  // Repository
+  getIt.registerLazySingleton<LocationRepository>(
+    () => LocationRepositoryImpl(),
+  );
+
+  // Use cases
+  getIt.registerLazySingleton(
+    () => GetCurrentLocation(getIt<LocationRepository>()),
+  );
+  getIt.registerLazySingleton(
+    () => GetAddressFromCoordinates(getIt<LocationRepository>()),
+  );
+  getIt.registerLazySingleton(
+    () => GetCoordinatesFromAddress(getIt<LocationRepository>()),
+  );
+
+  // Bloc — factory, not singleton, since Blocs shouldn't usually be reused across app restarts/screens indefinitely
+  getIt.registerFactory(
+    () => LocationBloc(
+      getCurrentLocation: getIt<GetCurrentLocation>(),
+      getAddressFromCoordinates: getIt<GetAddressFromCoordinates>(),
+      getCoordinatesFromAddress: getIt<GetCoordinatesFromAddress>(),
     ),
   );
 }

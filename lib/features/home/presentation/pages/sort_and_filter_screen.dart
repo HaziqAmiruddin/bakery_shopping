@@ -5,7 +5,7 @@ import 'package:shopping_app/core/widgets/app_button.dart';
 import 'package:shopping_app/core/widgets/app_divider.dart';
 import 'package:shopping_app/core/widgets/app_scaffold.dart';
 import 'package:shopping_app/core/widgets/general_app_bar.dart';
-import 'package:shopping_app/features/home/data/sample_data.dart';
+import 'package:shopping_app/features/home/data/product_data/local_data.dart';
 import 'package:shopping_app/features/home/presentation/widgets/filter_title.dart';
 import 'package:shopping_app/features/home/presentation/widgets/sort_abd_filter_list.dart';
 

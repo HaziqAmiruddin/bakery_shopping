@@ -3,7 +3,7 @@ import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
 import 'package:shopping_app/core/widgets/app_button.dart';
 import 'package:shopping_app/core/widgets/app_divider.dart';
-import 'package:shopping_app/features/home/data/sample_data.dart';
+import 'package:shopping_app/features/home/data/product_data/local_data.dart';
 
 enum OrderType { active, completed, canceled }
 

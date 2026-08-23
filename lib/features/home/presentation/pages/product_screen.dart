@@ -11,7 +11,7 @@ import 'package:shopping_app/core/widgets/app_svg_viewer.dart';
 import 'package:shopping_app/core/widgets/general_app_bar.dart';
 import 'package:shopping_app/core/widgets/rate_widget.dart';
 import 'package:shopping_app/core/widgets/shaded_container.dart';
-import 'package:shopping_app/features/home/data/sample_data.dart';
+import 'package:shopping_app/features/home/data/product_data/local_data.dart';
 import 'package:shopping_app/features/home/presentation/pages/sort_and_filter_screen.dart';
 
 class ProductsScreen extends StatelessWidget {

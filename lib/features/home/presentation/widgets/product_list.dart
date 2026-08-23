@@ -4,7 +4,7 @@ import 'package:shopping_app/core/theme/dimens.dart';
 import 'package:shopping_app/core/utils/app_navigator.dart';
 import 'package:shopping_app/core/widgets/app_title_widget.dart';
 import 'package:shopping_app/core/widgets/rate_widget.dart';
-import 'package:shopping_app/features/home/data/sample_data.dart';
+import 'package:shopping_app/features/home/data/product_data/local_data.dart';
 import 'package:shopping_app/features/home/presentation/pages/product_details_screen.dart';
 import 'package:shopping_app/features/home/presentation/pages/product_screen.dart';
 
@@ -38,7 +38,10 @@ class ProductList extends StatelessWidget {
                     padding: const EdgeInsets.only(left: Dimens.largePadding),
                     child: InkWell(
                       onTap: () {
-                        appPush(context, ProductDetailsScreen());
+                        appPush(
+                          context,
+                          ProductDetailsScreen(product: localProducts[index]),
+                        );
                       },
                       borderRadius: BorderRadius.circular(24),
                       child: SizedBox(

@@ -25,7 +25,7 @@ class _HomeTabState extends State<HomeTab> {
       const HomeScreen(),
       const CartScreen(),
       const OrderScreen(),
-      const MapScreen(),
+      const MapScreen(isSelectionMode: false),
       const ProfileScreen(),
     ];
 

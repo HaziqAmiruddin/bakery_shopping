@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_app/core/gen/assets.gen.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
@@ -6,6 +7,8 @@ import 'package:shopping_app/core/utils/app_navigator.dart';
 import 'package:shopping_app/core/utils/sized_context.dart';
 import 'package:shopping_app/core/widgets/app_icon_button.dart';
 import 'package:shopping_app/core/widgets/app_search_bar.dart';
+import 'package:shopping_app/features/map/presentation/bloc/location_bloc.dart';
+import 'package:shopping_app/features/map/presentation/bloc/location_state.dart';
 import 'package:shopping_app/features/map/presentation/pages/map_screen.dart';
 import 'package:shopping_app/features/notification/presentation/pages/notification_screen.dart';
 
@@ -24,7 +27,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             AppIconButton(
               iconPath: Assets.icons.location,
               onPressed: () {
-                appPush(context, MapScreen());
+                appPush(context, const MapScreen());
               },
             ),
           ],
@@ -48,9 +51,23 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    "Bukit Jelutong, MLY",
-                    style: textOwn.titleSmall.copyWith(color: Colors.white),
+                  BlocBuilder<LocationBloc, LocationState>(
+                    builder: (context, state) {
+                      String displayText = "Fetching location...";
+                      if (state is LocationLoaded) {
+                        displayText = state.location.address;
+                      }
+                      if (state is LocationConfirmed) {
+                        displayText = state.location.address;
+                      }
+                      if (state is LocationError) {
+                        displayText = "Location unavailable";
+                      }
+                      return Text(
+                        displayText,
+                        style: textOwn.titleSmall.copyWith(color: Colors.white),
+                      );
+                    },
                   ),
                 ],
               ),

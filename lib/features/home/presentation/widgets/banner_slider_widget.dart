@@ -4,7 +4,7 @@ import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
 import 'package:shopping_app/core/utils/check_device_size.dart';
 import 'package:shopping_app/core/utils/sized_context.dart';
-import 'package:shopping_app/features/home/data/sample_data.dart';
+import 'package:shopping_app/features/home/data/product_data/local_data.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BannerSliderWidget extends StatefulWidget {

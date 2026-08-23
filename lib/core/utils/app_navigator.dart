@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/features/map/domain/entities/location_entities.dart';
 
 dynamic appPush(
   final BuildContext context,
@@ -24,6 +25,10 @@ dynamic appPushReplacement(
   );
 }
 
-void appPop(final BuildContext context, {final dynamic data}) {
+void appPop(
+  final BuildContext context, {
+  //LocationEntity location,
+  final dynamic data,
+}) {
   Navigator.pop(context, data);
 }

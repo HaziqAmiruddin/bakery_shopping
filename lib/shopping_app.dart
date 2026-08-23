@@ -4,6 +4,8 @@ import 'package:shopping_app/core/inject/injection.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/features/auth/data/firebase_auth_repo.dart';
 import 'package:shopping_app/features/auth/presentation/bloc/cubits/auth_cubit.dart';
+import 'package:shopping_app/features/map/presentation/bloc/location_bloc.dart';
+import 'package:shopping_app/features/map/presentation/bloc/location_event.dart';
 import 'package:shopping_app/features/notification/presentation/bloc/notification_cubit.dart';
 import 'package:shopping_app/features/splash/presentation/splash_screen.dart';
 
@@ -23,6 +25,9 @@ class ShoppingApp extends StatelessWidget {
 
         BlocProvider<NotificationCubit>(
           create: (_) => getIt<NotificationCubit>(),
+        ),
+        BlocProvider<LocationBloc>(
+          create: (_) => getIt<LocationBloc>()..add(FetchCurrentLocation()),
         ),
       ],
       child: MaterialApp(
