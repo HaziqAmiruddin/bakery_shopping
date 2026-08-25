@@ -1,13 +1,6 @@
 import 'package:shopping_app/core/gen/assets.gen.dart';
 import 'package:shopping_app/features/home/domain/entities/product_entities.dart';
 
-// List<String> banners = [
-//   Assets.images.specialOffer1.path,
-//   Assets.images.specialOffer2.path,
-//   Assets.images.specialOffer3.path,
-//   Assets.images.specialOffer4.path,
-// ];
-
 final List<BannerOffer> bannerOffers = [
   BannerOffer(
     image: Assets.images.specialOffer1.path,

@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shopping_app/features/home/data/repo/product_repo_impl.dart';
+import 'package:shopping_app/features/home/domain/repo/product_repository.dart';
+import 'package:shopping_app/features/home/domain/useccase/get_all_products_usecase.dart';
+import 'package:shopping_app/features/home/domain/useccase/get_product_by_category_usecase.dart';
+import 'package:shopping_app/features/home/presentation/bloc/bloc/category_overview_bloc.dart';
+import 'package:shopping_app/features/home/presentation/bloc/bloc/category_product_bloc.dart';
 import 'package:shopping_app/features/map/data/location_data_sources.dart';
 import 'package:shopping_app/features/map/domain/repository/location_repo.dart';
 import 'package:shopping_app/features/map/domain/usecases/get_address_from_coordinates.dart';
@@ -79,5 +85,26 @@ void setupDependencies() {
       getAddressFromCoordinates: getIt<GetAddressFromCoordinates>(),
       getCoordinatesFromAddress: getIt<GetCoordinatesFromAddress>(),
     ),
+  );
+
+  // Repository
+  getIt.registerLazySingleton<ProductRepository>(() => ProductRepositoryImpl());
+
+  // UseCase
+  getIt.registerLazySingleton<GetProductsByCategoryUseCase>(
+    () => GetProductsByCategoryUseCase(getIt<ProductRepository>()),
+  );
+
+  // Bloc — factory, since each CategoryProductsScreen should get a fresh bloc
+  getIt.registerFactory<CategoryProductsBloc>(
+    () => CategoryProductsBloc(getIt<GetProductsByCategoryUseCase>()),
+  );
+
+  getIt.registerLazySingleton<GetAllProductsUseCase>(
+    () => GetAllProductsUseCase(getIt<ProductRepository>()),
+  );
+
+  getIt.registerFactory<CategoryOverviewBloc>(
+    () => CategoryOverviewBloc(getIt<GetAllProductsUseCase>()),
   );
 }

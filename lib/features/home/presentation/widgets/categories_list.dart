@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopping_app/core/inject/injection.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
+import 'package:shopping_app/core/utils/app_navigator.dart';
 import 'package:shopping_app/features/home/data/product_data/local_data.dart';
+import 'package:shopping_app/features/home/presentation/bloc/bloc/category_product_bloc.dart';
+import 'package:shopping_app/features/home/presentation/bloc/event/category_product_event.dart';
+import 'package:shopping_app/features/home/presentation/pages/category_products_screen.dart';
 
 class CategoriesList extends StatelessWidget {
   const CategoriesList({super.key});
@@ -16,31 +22,48 @@ class CategoriesList extends StatelessWidget {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (final context, final index) {
-          return Column(
-            spacing: Dimens.padding,
-            children: [
-              Container(
-                width: 90,
-                height: 90,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: context.theme.scaffoldBackgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: colorsOwn.primary.withValues(alpha: 0.15),
-                      blurRadius: 10,
-                      offset: Offset(1, 1),
-                    ),
-                  ],
+          final category = titlesOfCategories[index];
+          return GestureDetector(
+            onTap: () {
+              appPush(
+                context,
+                BlocProvider<CategoryProductsBloc>(
+                  create: (_) =>
+                      getIt<CategoryProductsBloc>()
+                        ..add(FetchCategoryProducts(category)),
+                  child: CategoryProductsScreen(category: category),
                 ),
-                padding: EdgeInsets.all(Dimens.largePadding),
-                margin: EdgeInsets.symmetric(
-                  horizontal: index == 0 ? Dimens.largePadding : Dimens.padding,
+              );
+            },
+            child: Column(
+              spacing: Dimens.padding,
+              children: [
+                Container(
+                  width: 90,
+                  height: 90,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: context.theme.scaffoldBackgroundColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: colorsOwn.primary.withValues(alpha: 0.15),
+                        blurRadius: 10,
+                        offset: Offset(1, 1),
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.all(Dimens.largePadding),
+                  margin: EdgeInsets.symmetric(
+                    horizontal: index == 0
+                        ? Dimens.largePadding
+                        : Dimens.padding,
+                  ),
+                  child: Center(child: Image.asset(imagesOfCategories[index])),
                 ),
-                child: Center(child: Image.asset(imagesOfCategories[index])),
-              ),
-              Text(titlesOfCategories[index]),
-            ],
+                //Text(titlesOfCategories[index]),
+                Text(category),
+              ],
+            ),
           );
         },
       ),
