@@ -1,11 +1,34 @@
 import 'package:shopping_app/core/gen/assets.gen.dart';
 import 'package:shopping_app/features/home/domain/entities/product_entities.dart';
 
-List<String> banners = [
-  Assets.images.specialOffer1.path,
-  Assets.images.specialOffer2.path,
-  Assets.images.specialOffer3.path,
-  Assets.images.specialOffer4.path,
+// List<String> banners = [
+//   Assets.images.specialOffer1.path,
+//   Assets.images.specialOffer2.path,
+//   Assets.images.specialOffer3.path,
+//   Assets.images.specialOffer4.path,
+// ];
+
+final List<BannerOffer> bannerOffers = [
+  BannerOffer(
+    image: Assets.images.specialOffer1.path,
+    title: 'Cookies 50% Off',
+    category: 'Cookies',
+  ),
+  BannerOffer(
+    image: Assets.images.specialOffer2.path,
+    title: 'Chocolate Cake 50% Off',
+    category: 'Birthday cake',
+  ),
+  BannerOffer(
+    image: Assets.images.specialOffer3.path,
+    title: 'Roulette 50% Off',
+    category: 'Roulette',
+  ),
+  BannerOffer(
+    image: Assets.images.specialOffer4.path,
+    title: 'Donut 50% Off',
+    category: 'Donut',
+  ),
 ];
 
 final List<String> imagesOfCategories = [
@@ -13,10 +36,8 @@ final List<String> imagesOfCategories = [
   Assets.images.donutIllustration.path,
   Assets.images.cakeIllustration.path,
   Assets.images.pastryIllustration.path,
-  Assets.images.cupcakeIllustration.path,
-  Assets.images.donutIllustration.path,
-  Assets.images.cakeIllustration.path,
-  Assets.images.pastryIllustration.path,
+  Assets.images.chocolateChipCookie.path,
+  Assets.images.roulette.path,
 ];
 
 final List<String> titlesOfCategories = [
@@ -24,10 +45,8 @@ final List<String> titlesOfCategories = [
   'Donut',
   'Birthday cake',
   'Pastry',
-  'Cupcake',
-  'Donut',
-  'Birthday cake',
-  'Pastry',
+  'Cookies',
+  'Roulette',
 ];
 
 List<String> titleOfTheListOfProducts = [
@@ -108,6 +127,7 @@ final List<Product> localProducts = [
     //detailImage: Assets.images.strawberryChocolateCake.path,
     category: 'Birthday cake',
     price: 50.0,
+    discountPercentage: 50,
     rating: 9.1,
     description:
         'Our chocolate cake is made with a combination of the finest '
@@ -123,6 +143,7 @@ final List<Product> localProducts = [
     image: Assets.images.donutCategory1.path,
     category: 'Donut',
     price: 12.5,
+    discountPercentage: 50,
     rating: 8.7,
     description:
         'Light, airy sponge donuts glazed with a delicate sugar coating. '
@@ -135,6 +156,7 @@ final List<Product> localProducts = [
     image: Assets.images.donutCategory2.path,
     category: 'Donut',
     price: 13.0,
+    discountPercentage: 50,
     rating: 8.9,
     description:
         'Classic donuts dipped in smooth chocolate glaze and topped with '
@@ -147,6 +169,7 @@ final List<Product> localProducts = [
     image: Assets.images.donutCategory3.path,
     category: 'Donut',
     price: 11.0,
+    discountPercentage: 50,
     rating: 8.5,
     description:
         'A mixed box of our best-selling donuts, freshly fried and glazed '
@@ -183,6 +206,7 @@ final List<Product> localProducts = [
     image: Assets.images.cupcakeCategory3.path,
     category: 'Cupcake',
     price: 17.5,
+    discountPercentage: 50,
     rating: 9.0,
     description:
         'Mini chocolate cupcakes packed with cocoa flavor and topped with '
@@ -227,5 +251,48 @@ final List<Product> localProducts = [
         'A classic two-tier birthday cake with fresh cream frosting and '
         'seasonal fruit toppings.',
     seller: _defaultSeller,
+  ),
+  Product(
+    id: 'local_12',
+    name: 'Butter Cookies',
+    image:
+        Assets.images.chocolateChipCookie.path, // TODO: real cookie image asset
+    category: 'Cookies',
+    price: 15.0,
+    discountPercentage: 50,
+    rating: 8.6,
+    description:
+        'Crisp, buttery cookies baked to golden perfection — a timeless '
+        'classic treat for any time of day.',
+    seller: _defaultSeller,
+    availableWeights: const [],
+  ),
+  Product(
+    id: 'local_13',
+    name: 'Chocolate Chip Cookies',
+    image:
+        Assets.images.chocolateChipCookie.path, // TODO: real cookie image asset
+    category: 'Cookies',
+    price: 16.0,
+    discountPercentage: 50,
+    rating: 8.8,
+    description:
+        'Soft-baked cookies loaded with rich chocolate chips in every bite.',
+    seller: _defaultSeller,
+    availableWeights: const [],
+  ),
+  Product(
+    id: 'local_14',
+    name: 'Chocolate Roulette Cake',
+    image: Assets.images.roulette.path, // TODO: real roulette image asset
+    category: 'Roulette',
+    price: 40.0,
+    discountPercentage: 50,
+    rating: 8.9,
+    description:
+        'A rolled sponge cake swirled with silky chocolate cream — light, '
+        'elegant, and beautifully spiraled in every slice.',
+    seller: _defaultSeller,
+    availableWeights: const [],
   ),
 ];

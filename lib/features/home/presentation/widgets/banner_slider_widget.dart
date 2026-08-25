@@ -2,9 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
+import 'package:shopping_app/core/utils/app_navigator.dart';
 import 'package:shopping_app/core/utils/check_device_size.dart';
 import 'package:shopping_app/core/utils/sized_context.dart';
 import 'package:shopping_app/features/home/data/product_data/local_data.dart';
+import 'package:shopping_app/features/home/presentation/pages/discount_product_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BannerSliderWidget extends StatefulWidget {
@@ -29,12 +31,27 @@ class _BannerSliderWidgetState extends State<BannerSliderWidget> {
           spacing: Dimens.padding,
           children: [
             CarouselSlider(
-              items: banners.map((banner) {
+              items: bannerOffers.map((banner) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: Dimens.largePadding,
                   ),
-                  child: Image.asset(banner),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(Dimens.largePadding),
+                    onTap: () {
+                      appPush(
+                        context,
+                        DiscountProductScreen(
+                          category: banner.category,
+                          title: banner.title,
+                        ),
+                      );
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(Dimens.largePadding),
+                      child: Image.asset(banner.image, fit: BoxFit.cover),
+                    ),
+                  ),
                 );
               }).toList(),
               options: CarouselOptions(
@@ -52,7 +69,7 @@ class _BannerSliderWidgetState extends State<BannerSliderWidget> {
             ),
             AnimatedSmoothIndicator(
               activeIndex: _currentIndex,
-              count: banners.length,
+              count: bannerOffers.length,
               effect: WormEffect(
                 activeDotColor: colorsOwn.primary,
                 dotColor: colorsOwn.gray,

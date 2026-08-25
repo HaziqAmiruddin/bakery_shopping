@@ -1126,6 +1126,10 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/Roulette.jpeg
+  AssetGenImage get roulette =>
+      const AssetGenImage('assets/images/Roulette.jpeg');
+
   /// File path: assets/images/Special offer 1.png
   AssetGenImage get specialOffer1 =>
       const AssetGenImage('assets/images/Special offer 1.png');
@@ -1164,6 +1168,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/cake.png
   AssetGenImage get cake => const AssetGenImage('assets/images/cake.png');
+
+  /// File path: assets/images/chocolate-chip-cookie.jpg
+  AssetGenImage get chocolateChipCookie =>
+      const AssetGenImage('assets/images/chocolate-chip-cookie.jpg');
 
   /// File path: assets/images/cupcake category 1.png
   AssetGenImage get cupcakeCategory1 =>
@@ -1246,6 +1254,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+    roulette,
     specialOffer1,
     specialOffer2,
     specialOffer3,
@@ -1256,6 +1265,7 @@ class $AssetsImagesGen {
     birthdayCakeCategory3,
     cakeIllustration,
     cake,
+    chocolateChipCookie,
     cupcakeCategory1,
     cupcakeCategory2,
     cupcakeCategory3,

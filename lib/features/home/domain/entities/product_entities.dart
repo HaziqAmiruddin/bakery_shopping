@@ -12,6 +12,18 @@ class Seller {
   });
 }
 
+class BannerOffer {
+  final String image;
+  final String title;
+  final String category; // must match Product.category exactly
+
+  const BannerOffer({
+    required this.image,
+    required this.title,
+    required this.category,
+  });
+}
+
 class Product {
   final String id;
   final String name;
@@ -24,6 +36,7 @@ class Product {
   final Seller seller;
   final List<String> availableWeights;
   final ProductSource source;
+  final double discountPercentage;
 
   const Product({
     required this.id,
@@ -37,8 +50,11 @@ class Product {
     this.detailImage = '',
     this.availableWeights = const ['0.5 kg', '1 kg', '1.5 kg', '2 kg', '4 kg'],
     this.source = ProductSource.local,
+    this.discountPercentage = 0,
   });
 
+  bool get isOnSale => discountPercentage > 0;
+  double get discountedPrice => price! - (price! * discountPercentage / 100);
   String get displayImage => detailImage.isNotEmpty ? detailImage : image;
 
   factory Product.fromDummyJson(Map<String, dynamic> json) {
@@ -54,6 +70,7 @@ class Product {
       price: (json['price'] as num?)?.toDouble() ?? 0,
       description: json['description'] as String? ?? '',
       rating: (json['rating'] as num?)?.toDouble() ?? 0,
+      discountPercentage: (json['discountPercentage'] as num?)?.toDouble() ?? 0,
       seller: Seller(
         name: json['brand'] as String? ?? 'DummyJSON Store',
         imagePath: 'assets/images/profile_image.png', // fallback local avatar

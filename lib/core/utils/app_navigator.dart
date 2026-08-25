@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/features/map/domain/entities/location_entities.dart';
 
 dynamic appPush(
   final BuildContext context,
