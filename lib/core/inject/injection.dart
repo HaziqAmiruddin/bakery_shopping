@@ -1,12 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shopping_app/features/home/data/product_data/internet_data.dart';
 import 'package:shopping_app/features/home/data/repo/product_repo_impl.dart';
 import 'package:shopping_app/features/home/domain/repo/product_repository.dart';
 import 'package:shopping_app/features/home/domain/useccase/get_all_products_usecase.dart';
+import 'package:shopping_app/features/home/domain/useccase/get_featured_products_usecase.dart';
+import 'package:shopping_app/features/home/domain/useccase/get_new_products_usecase.dart';
+import 'package:shopping_app/features/home/domain/useccase/get_online_products_usecase.dart';
+import 'package:shopping_app/features/home/domain/useccase/get_popular_products_useccase.dart';
 import 'package:shopping_app/features/home/domain/useccase/get_product_by_category_usecase.dart';
 import 'package:shopping_app/features/home/presentation/bloc/bloc/category_overview_bloc.dart';
 import 'package:shopping_app/features/home/presentation/bloc/bloc/category_product_bloc.dart';
+import 'package:shopping_app/features/home/presentation/bloc/bloc/product_list_bloc.dart';
 import 'package:shopping_app/features/map/data/location_data_sources.dart';
 import 'package:shopping_app/features/map/domain/repository/location_repo.dart';
 import 'package:shopping_app/features/map/domain/usecases/get_address_from_coordinates.dart';
@@ -88,7 +94,7 @@ void setupDependencies() {
   );
 
   // Repository
-  getIt.registerLazySingleton<ProductRepository>(() => ProductRepositoryImpl());
+  //getIt.registerLazySingleton<ProductRepository>(() => ProductRepositoryImpl());
 
   // UseCase
   getIt.registerLazySingleton<GetProductsByCategoryUseCase>(
@@ -106,5 +112,36 @@ void setupDependencies() {
 
   getIt.registerFactory<CategoryOverviewBloc>(
     () => CategoryOverviewBloc(getIt<GetAllProductsUseCase>()),
+  );
+
+  getIt.registerLazySingleton<GetFeaturedProductsUseCase>(
+    () => GetFeaturedProductsUseCase(getIt<ProductRepository>()),
+  );
+  getIt.registerLazySingleton<GetNewProductsUseCase>(
+    () => GetNewProductsUseCase(getIt<ProductRepository>()),
+  );
+  getIt.registerLazySingleton<GetPopularProductsUseCase>(
+    () => GetPopularProductsUseCase(getIt<ProductRepository>()),
+  );
+
+  getIt.registerFactory<ProductListBloc>(
+    () => ProductListBloc(
+      getFeaturedProductsUseCase: getIt<GetFeaturedProductsUseCase>(),
+      getNewProductsUseCase: getIt<GetNewProductsUseCase>(),
+      getPopularProductsUseCase: getIt<GetPopularProductsUseCase>(),
+      getOnlineProductsUseCase: getIt<GetOnlineProductsUseCase>(),
+    ),
+  );
+
+  // Repository — now needs ProductApiService
+  getIt.registerLazySingleton<ProductApiService>(() => ProductApiService());
+
+  getIt.registerLazySingleton<ProductRepository>(
+    () => ProductRepositoryImpl(apiService: getIt<ProductApiService>()),
+  );
+
+  // UseCase
+  getIt.registerLazySingleton<GetOnlineProductsUseCase>(
+    () => GetOnlineProductsUseCase(getIt<ProductRepository>()),
   );
 }

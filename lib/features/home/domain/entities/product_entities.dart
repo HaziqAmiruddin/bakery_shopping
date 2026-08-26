@@ -37,6 +37,9 @@ class Product {
   final List<String> availableWeights;
   final ProductSource source;
   final double discountPercentage;
+  final bool isFeatured;
+  final bool isNew;
+  final bool isPopular;
 
   const Product({
     required this.id,
@@ -51,7 +54,14 @@ class Product {
     this.availableWeights = const ['0.5 kg', '1 kg', '1.5 kg', '2 kg', '4 kg'],
     this.source = ProductSource.local,
     this.discountPercentage = 0,
+    this.isFeatured = false,
+    this.isNew = false,
+    this.isPopular = false,
   });
+
+  //   @override
+  //   List<Object?> get props => [id, name, image, category, price, rating, isFeatured, isNew, isPopular];
+  // }
 
   bool get isOnSale => discountPercentage > 0;
   double get discountedPrice => price! - (price! * discountPercentage / 100);
@@ -73,7 +83,7 @@ class Product {
       discountPercentage: (json['discountPercentage'] as num?)?.toDouble() ?? 0,
       seller: Seller(
         name: json['brand'] as String? ?? 'DummyJSON Store',
-        imagePath: 'assets/images/profile_image.png', // fallback local avatar
+        imagePath: 'assets/images/profile-image.png', // fallback local avatar
         isAsset: true,
       ),
       source: ProductSource.remote,

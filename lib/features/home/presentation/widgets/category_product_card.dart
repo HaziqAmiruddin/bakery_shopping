@@ -4,6 +4,7 @@ import 'package:shopping_app/core/theme/dimens.dart';
 import 'package:shopping_app/core/widgets/app_button.dart';
 import 'package:shopping_app/core/widgets/rate_widget.dart';
 import 'package:shopping_app/features/home/domain/entities/product_entities.dart';
+import 'package:shopping_app/features/home/presentation/widgets/product_image.dart';
 
 class CategoryProductCard extends StatelessWidget {
   final Product product;
@@ -37,7 +38,8 @@ class CategoryProductCard extends StatelessWidget {
             width: 180,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(Dimens.corners),
-              child: Image.asset(product.image, fit: BoxFit.cover),
+              //child: Image.asset(product.image, fit: BoxFit.cover),
+              child: ProductImage(imagePath: product.image, fit: BoxFit.cover),
             ),
           ),
           SizedBox(

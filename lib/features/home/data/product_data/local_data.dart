@@ -46,6 +46,7 @@ List<String> titleOfTheListOfProducts = [
   'Featured products',
   'New products',
   'Popular products',
+  'Online products',
 ];
 
 List<String> productsName = [
@@ -86,8 +87,8 @@ List<String> categoryProductsName = [
   'Birthday cake',
 ];
 
-final String productDescription =
-    'Our chocolate cake is made with a combination of the finest ingredients, from premium chocolate and cocoa to the freshest eggs and pure butter. With a soft, moist texture and rich chocolate flavor, this cake will give you an unforgettable experience.\nEach slice is a celebration of pure indulgence, crafted to delight your senses.\nDiscover the difference that quality and care make in every single bite.';
+// final String productDescription =
+//     'Our chocolate cake is made with a combination of the finest ingredients, from premium chocolate and cocoa to the freshest eggs and pure butter. With a soft, moist texture and rich chocolate flavor, this cake will give you an unforgettable experience.\nEach slice is a celebration of pure indulgence, crafted to delight your senses.\nDiscover the difference that quality and care make in every single bite.';
 
 final List<String> weights = ['0.5 kg', '1 kg', '1.5 kg', '2 kg', '4 kg'];
 
@@ -112,6 +113,9 @@ final List<Product> localProducts = [
         'moist, and topped with fresh fruit for a delicate balance of '
         'sweetness in every bite.',
     seller: _defaultSeller,
+    isFeatured: true,
+    isNew: false,
+    isPopular: true,
   ),
   Product(
     id: 'local_2',
@@ -129,6 +133,9 @@ final List<Product> localProducts = [
         'chocolate flavor, this cake will give you an unforgettable '
         'experience. Each slice is a celebration of pure indulgence.',
     seller: _defaultSeller,
+    isFeatured: true,
+    isNew: false,
+    isPopular: false,
   ),
   Product(
     id: 'local_3',
@@ -142,6 +149,9 @@ final List<Product> localProducts = [
         'Light, airy sponge donuts glazed with a delicate sugar coating. '
         'Freshly baked every morning for the softest bite.',
     seller: _defaultSeller,
+    isFeatured: false,
+    isNew: true,
+    isPopular: false,
   ),
   Product(
     id: 'local_4',
@@ -155,6 +165,9 @@ final List<Product> localProducts = [
         'Classic donuts dipped in smooth chocolate glaze and topped with '
         'chocolate shavings — rich, indulgent, and always a favorite.',
     seller: _defaultSeller,
+    isFeatured: false,
+    isNew: true,
+    isPopular: true,
   ),
   Product(
     id: 'local_5',
@@ -168,6 +181,9 @@ final List<Product> localProducts = [
         'A mixed box of our best-selling donuts, freshly fried and glazed '
         'daily. Perfect for sharing or treating yourself.',
     seller: _defaultSeller,
+    isFeatured: false,
+    isNew: true,
+    isPopular: false,
   ),
   Product(
     id: 'local_6',
@@ -180,6 +196,9 @@ final List<Product> localProducts = [
         'Fluffy vanilla cupcakes topped with fresh strawberry buttercream '
         'and a slice of real strawberry — light, fruity, and refreshing.',
     seller: _defaultSeller,
+    isFeatured: true,
+    isNew: false,
+    isPopular: false,
   ),
   Product(
     id: 'local_7',
@@ -192,6 +211,9 @@ final List<Product> localProducts = [
         'Moist cupcakes swirled with blackberry compote and finished with '
         'a tangy-sweet blackberry frosting.',
     seller: _defaultSeller,
+    isFeatured: false,
+    isNew: false,
+    isPopular: false,
   ),
   Product(
     id: 'local_8',
@@ -205,6 +227,9 @@ final List<Product> localProducts = [
         'Mini chocolate cupcakes packed with cocoa flavor and topped with '
         'silky chocolate ganache.',
     seller: _defaultSeller,
+    isFeatured: false,
+    isNew: false,
+    isPopular: true,
   ),
   Product(
     id: 'local_9',
@@ -218,6 +243,9 @@ final List<Product> localProducts = [
         'A festive layered birthday cake with buttercream frosting and '
         'colorful decorations — customizable for any celebration.',
     seller: _defaultSeller,
+    isFeatured: true,
+    isNew: false,
+    isPopular: true,
   ),
   Product(
     id: 'local_10',
@@ -231,6 +259,9 @@ final List<Product> localProducts = [
         'A rich vanilla sponge birthday cake with smooth fondant finish, '
         'perfect for making any birthday memorable.',
     seller: _defaultSeller,
+    isFeatured: false,
+    isNew: false,
+    isPopular: false,
   ),
   Product(
     id: 'local_11',
@@ -244,6 +275,9 @@ final List<Product> localProducts = [
         'A classic two-tier birthday cake with fresh cream frosting and '
         'seasonal fruit toppings.',
     seller: _defaultSeller,
+    isFeatured: false,
+    isNew: false,
+    isPopular: false,
   ),
   Product(
     id: 'local_12',
@@ -259,6 +293,9 @@ final List<Product> localProducts = [
         'classic treat for any time of day.',
     seller: _defaultSeller,
     availableWeights: const [],
+    isFeatured: false,
+    isNew: true,
+    isPopular: false,
   ),
   Product(
     id: 'local_13',
@@ -273,6 +310,9 @@ final List<Product> localProducts = [
         'Soft-baked cookies loaded with rich chocolate chips in every bite.',
     seller: _defaultSeller,
     availableWeights: const [],
+    isFeatured: false,
+    isNew: false,
+    isPopular: false,
   ),
   Product(
     id: 'local_14',
@@ -287,5 +327,8 @@ final List<Product> localProducts = [
         'elegant, and beautifully spiraled in every slice.',
     seller: _defaultSeller,
     availableWeights: const [],
+    isFeatured: true,
+    isNew: false,
+    isPopular: false,
   ),
 ];

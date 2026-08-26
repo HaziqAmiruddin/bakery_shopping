@@ -26,4 +26,22 @@ class ProductApiService {
 
     return results;
   }
+
+  Future<List<Product>> getAllProducts({int limit = 10}) async {
+    final uri = Uri.parse(
+      _baseUrl,
+    ).replace(queryParameters: {'limit': '$limit'});
+
+    final response = await http.get(uri);
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to fetch products (${response.statusCode})');
+    }
+
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
+    return (data['products'] as List)
+        .cast<Map<String, dynamic>>()
+        .map(Product.fromDummyJson)
+        .toList();
+  }
 }
