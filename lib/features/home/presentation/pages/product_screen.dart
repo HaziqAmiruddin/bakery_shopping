@@ -88,8 +88,10 @@ class ProductsScreen extends StatelessWidget {
                 mainAxisExtent: 210,
               ),
               shrinkWrap: true,
-              itemCount: categoryProductsImage.length,
+              //itemCount: categoryProductsImage.length,
+              itemCount: localProducts.length,
               itemBuilder: (final context, final index) {
+                final product = localProducts[index];
                 return ShadedContainer(
                   child: Column(
                     spacing: Dimens.padding,
@@ -103,7 +105,8 @@ class ProductsScreen extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(Dimens.corners),
                             child: Image.asset(
-                              categoryProductsImage[index],
+                              //categoryProductsImage[index],
+                              product.image,
                               fit: BoxFit.fitWidth,
                             ),
                           ),
@@ -122,20 +125,21 @@ class ProductsScreen extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    categoryProductsName[index],
+                                    //categoryProductsName[index],
+                                    product.name,
                                     style:
                                         context.theme.appTypography.titleSmall,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                RateWidget(rate: '7.10'),
+                                RateWidget(rate: product.rating.toString()),
                               ],
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '\$${index + 1}8.00',
+                                  '\$${product.price?.toStringAsFixed(2)}',
                                   style: context.theme.appTypography.labelLarge
                                       .copyWith(fontWeight: FontWeight.bold),
                                 ),

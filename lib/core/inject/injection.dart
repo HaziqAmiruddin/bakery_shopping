@@ -1,6 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shopping_app/features/cart/data/cart_remote_data_source.dart';
+import 'package:shopping_app/features/cart/data/repo_imp/repository_implemenntation.dart';
+import 'package:shopping_app/features/cart/domain/repo/cart_repo.dart';
+import 'package:shopping_app/features/cart/domain/usecase/add_to_cart_usecase.dart';
+import 'package:shopping_app/features/cart/domain/usecase/remove_from_cart_usecase.dart';
+import 'package:shopping_app/features/cart/domain/usecase/update_cart_quantity_usecase.dart';
+import 'package:shopping_app/features/cart/domain/usecase/watch_cart_usecase.dart';
+import 'package:shopping_app/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:shopping_app/features/cart/presentation/bloc/cart_event.dart';
 import 'package:shopping_app/features/home/data/product_data/internet_data.dart';
 import 'package:shopping_app/features/home/data/repo/product_repo_impl.dart';
 import 'package:shopping_app/features/home/domain/repo/product_repository.dart';
@@ -143,5 +152,44 @@ void setupDependencies() {
   // UseCase
   getIt.registerLazySingleton<GetOnlineProductsUseCase>(
     () => GetOnlineProductsUseCase(getIt<ProductRepository>()),
+  );
+
+  // DataSource
+  getIt.registerLazySingleton<CartRemoteDataSource>(
+    () => CartRemoteDataSource(
+      firestore: getIt<FirebaseFirestore>(),
+      firebaseAuth: getIt<FirebaseAuth>(),
+    ),
+  );
+
+  // Repository
+  getIt.registerLazySingleton<CartRepository>(
+    () => CartRepositoryImpl(remoteDataSource: getIt<CartRemoteDataSource>()),
+  );
+
+  // UseCases
+  getIt.registerLazySingleton<WatchCartUseCase>(
+    () => WatchCartUseCase(getIt<CartRepository>()),
+  );
+  getIt.registerLazySingleton<AddToCartUseCase>(
+    () => AddToCartUseCase(getIt<CartRepository>()),
+  );
+  getIt.registerLazySingleton<UpdateCartQuantityUseCase>(
+    () => UpdateCartQuantityUseCase(getIt<CartRepository>()),
+  );
+  getIt.registerLazySingleton<RemoveFromCartUseCase>(
+    () => RemoveFromCartUseCase(getIt<CartRepository>()),
+  );
+
+  // Bloc — this one should be a singleton, not a factory, since the cart
+  // needs to persist and stay subscribed across the whole app (badge icon,
+  // product cards, cart screen all share the same live state).
+  getIt.registerLazySingleton<CartBloc>(
+    () => CartBloc(
+      watchCartUseCase: getIt<WatchCartUseCase>(),
+      addToCartUseCase: getIt<AddToCartUseCase>(),
+      updateCartQuantityUseCase: getIt<UpdateCartQuantityUseCase>(),
+      removeFromCartUseCase: getIt<RemoveFromCartUseCase>(),
+    )..add(WatchCartStarted()),
   );
 }

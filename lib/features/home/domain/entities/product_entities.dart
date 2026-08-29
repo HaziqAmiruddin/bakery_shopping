@@ -30,7 +30,7 @@ class Product {
   final String image;
   final String detailImage;
   final String category;
-  final double? price;
+  final double price;
   final String? description;
   final double rating;
   final Seller seller;
@@ -64,7 +64,8 @@ class Product {
   // }
 
   bool get isOnSale => discountPercentage > 0;
-  double get discountedPrice => price! - (price! * discountPercentage / 100);
+  double get discountedPrice =>
+      isOnSale ? price - (price * discountPercentage / 100) : price;
   String get displayImage => detailImage.isNotEmpty ? detailImage : image;
 
   factory Product.fromDummyJson(Map<String, dynamic> json) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_app/core/gen/assets.gen.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
@@ -9,6 +10,8 @@ import 'package:shopping_app/core/widgets/app_icon_button.dart';
 import 'package:shopping_app/core/widgets/app_read_more_text.dart';
 import 'package:shopping_app/core/widgets/app_scaffold.dart';
 import 'package:shopping_app/core/widgets/rate_widget.dart';
+import 'package:shopping_app/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:shopping_app/features/cart/presentation/bloc/cart_event.dart';
 import 'package:shopping_app/features/home/domain/entities/product_entities.dart';
 import 'package:shopping_app/features/home/presentation/widgets/product_details_appbar.dart';
 import 'package:shopping_app/features/home/presentation/widgets/user_profile_image.dart';
@@ -157,6 +160,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             children: product.availableWeights.map((weight) {
                               final isSelected = _selectedWeight == weight;
                               return AppChoiceChip(
+                                key: ValueKey(weight),
                                 label: weight,
                                 selected: isSelected,
                                 onSelected: (selected) {
@@ -202,8 +206,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        if (product.isOnSale)
+                          Text(
+                            '\$${product.price.toStringAsFixed(2)}',
+                            style: appTypography.bodyMedium.copyWith(
+                              color: appColor.white.withValues(alpha: 0.6),
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
                         Text(
-                          '\$${product.price?.toStringAsFixed(2)}',
+                          '\$${product.discountedPrice.toStringAsFixed(2)}',
                           style: appTypography.bodyLarge.copyWith(
                             color: appColor.white,
                             fontSize: 24,
@@ -215,7 +227,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           child: AppButton(
                             margin: EdgeInsets.zero,
                             title: 'Add to cart',
-                            onPressed: () {},
+                            onPressed: () {
+                              context.read<CartBloc>().add(
+                                AddToCartPressed(product),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    '${product.name} added to cart',
+                                  ),
+                                  duration: const Duration(seconds: 1),
+                                ),
+                              );
+                            },
                             borderRadius: Dimens.corners,
                             color: appColor.white,
                             textStyle: appTypography.bodyLarge.copyWith(

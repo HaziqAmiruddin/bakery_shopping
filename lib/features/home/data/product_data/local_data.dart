@@ -75,17 +75,17 @@ List<String> categoryProductsImage = [
   Assets.images.birthdayCakeCategory3.path,
 ];
 
-List<String> categoryProductsName = [
-  'Sponge donut',
-  'Chocolate donut',
-  'Donuts',
-  'Strawberry cake',
-  'blackberry cake',
-  'Chocolate cake',
-  'Birthday cake',
-  'Birthday cake',
-  'Birthday cake',
-];
+// List<String> categoryProductsName = [
+//   'Sponge donut',
+//   'Chocolate donut',
+//   'Donuts',
+//   'Strawberry cake',
+//   'blackberry cake',
+//   'Chocolate cake',
+//   'Birthday cake',
+//   'Birthday cake',
+//   'Birthday cake',
+// ];
 
 // final String productDescription =
 //     'Our chocolate cake is made with a combination of the finest ingredients, from premium chocolate and cocoa to the freshest eggs and pure butter. With a soft, moist texture and rich chocolate flavor, this cake will give you an unforgettable experience.\nEach slice is a celebration of pure indulgence, crafted to delight your senses.\nDiscover the difference that quality and care make in every single bite.';

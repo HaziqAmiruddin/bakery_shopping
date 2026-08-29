@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
 import 'package:shopping_app/core/widgets/app_button.dart';
 import 'package:shopping_app/core/widgets/rate_widget.dart';
+import 'package:shopping_app/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:shopping_app/features/cart/presentation/bloc/cart_event.dart';
 import 'package:shopping_app/features/home/domain/entities/product_entities.dart';
 import 'package:shopping_app/features/home/presentation/widgets/product_image.dart';
 
@@ -77,7 +81,15 @@ class CategoryProductCard extends StatelessWidget {
             height: 32,
             child: AppButton(
               title: "Add to Cart",
-              onPressed: () {},
+              onPressed: () {
+                context.read<CartBloc>().add(AddToCartPressed(product));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('${product.name} added to cart'),
+                    duration: const Duration(seconds: 1),
+                  ),
+                );
+              },
               margin: EdgeInsets.zero,
               padding: WidgetStateProperty.all<EdgeInsets>(
                 EdgeInsets.symmetric(horizontal: Dimens.padding),

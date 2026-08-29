@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
             width: checkVerySmallDeviceSize(context) ? 290 : 390,
           ),
           SizedBox(height: Dimens.largePadding),
-          Assets.images.logo.image(
+          Assets.images.cake.image(
             width: checkSmallDeviceSize(context) ? 205 : 305,
           ),
         ],
