@@ -16,6 +16,11 @@ abstract class AuthRepo {
   //log in with google
   Future<AppUser?> signInWithGoogle();
 
+  Future<AppUser> updateProfilePhoto(String uid, String photoUrl);
+
+  // AuthRepo (abstract)
+  Future<AppUser> updateProfileName(String uid, String name);
+
   //log in with Apple
   // Future<AppUser?> signInWithApple();
 }

@@ -7,6 +7,7 @@ class CartItem extends Equatable {
   final double price;
   final double originalPrice;
   final int quantity;
+  final String? weight;
 
   const CartItem({
     required this.productId,
@@ -15,11 +16,15 @@ class CartItem extends Equatable {
     required this.price,
     required this.originalPrice,
     required this.quantity,
+    this.weight,
   });
 
   bool get hasDiscount => originalPrice > price;
   double get subtotal => price * quantity;
   double get savings => (originalPrice - price) * quantity;
+
+  String get cartDocId =>
+      weight != null && weight!.isNotEmpty ? '${productId}_$weight' : productId;
 
   CartItem copyWith({int? quantity}) {
     return CartItem(
@@ -29,6 +34,7 @@ class CartItem extends Equatable {
       price: price,
       originalPrice: originalPrice,
       quantity: quantity ?? this.quantity,
+      weight: weight,
     );
   }
 
@@ -42,6 +48,7 @@ class CartItem extends Equatable {
           (data['originalPrice'] as num?)?.toDouble() ??
           (data['price'] as num).toDouble(),
       quantity: (data['quantity'] as num).toInt(),
+      weight: data['weight'] as String?,
     );
   }
 
@@ -53,6 +60,7 @@ class CartItem extends Equatable {
       'price': price,
       'originalPrice': originalPrice,
       'quantity': quantity,
+      'weight': weight,
     };
   }
 
@@ -64,5 +72,6 @@ class CartItem extends Equatable {
     price,
     originalPrice,
     quantity,
+    weight,
   ];
 }

@@ -5,6 +5,7 @@ import 'package:shopping_app/core/widgets/app_title_widget.dart';
 import 'package:shopping_app/features/home/presentation/pages/category_screen.dart';
 import 'package:shopping_app/features/home/presentation/widgets/banner_slider_widget.dart';
 import 'package:shopping_app/features/home/presentation/widgets/categories_list.dart';
+import 'package:shopping_app/features/home/presentation/widgets/fav_product_preview_section.dart';
 import 'package:shopping_app/features/home/presentation/widgets/product_list.dart';
 import 'package:shopping_app/features/home/presentation/widgets/special_offer.dart';
 
@@ -31,6 +32,7 @@ class HomeScreen extends StatelessWidget {
           ),
           CategoriesList(),
           ProductList(),
+          FavoriteProductsPreviewSection(),
           SizedBox(height: Dimens.largePadding),
         ],
       ),

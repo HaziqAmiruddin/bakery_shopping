@@ -12,9 +12,10 @@ class WatchCartStarted extends CartEvent {}
 
 class AddToCartPressed extends CartEvent {
   final Product product;
-  const AddToCartPressed(this.product);
+  final String? weight;
+  const AddToCartPressed(this.product, {this.weight});
   @override
-  List<Object?> get props => [product];
+  List<Object?> get props => [product, weight];
 }
 
 class CartQuantityChanged extends CartEvent {

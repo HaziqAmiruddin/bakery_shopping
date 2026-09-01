@@ -27,10 +27,10 @@ class ProductApiService {
     return results;
   }
 
-  Future<List<Product>> getAllProducts({int limit = 10}) async {
+  Future<List<Product>> getAllProducts({int limit = 10, int skip = 0}) async {
     final uri = Uri.parse(
       _baseUrl,
-    ).replace(queryParameters: {'limit': '$limit'});
+    ).replace(queryParameters: {'limit': '$limit', 'skip': '$skip'});
 
     final response = await http.get(uri);
 

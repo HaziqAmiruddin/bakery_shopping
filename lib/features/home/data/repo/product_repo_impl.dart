@@ -19,7 +19,6 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<List<Product>> getAllProducts() async {
-    // TODO: implement getAllProducts
     return localProducts;
   }
 
@@ -36,7 +35,7 @@ class ProductRepositoryImpl implements ProductRepository {
       localProducts.where((p) => p.isPopular).toList();
 
   @override
-  Future<List<Product>> getOnlineProducts() async {
-    return _apiService.getAllProducts(limit: 10);
+  Future<List<Product>> getOnlineProducts({int skip = 0, int limit = 10}) {
+    return _apiService.getAllProducts(limit: limit, skip: skip);
   }
 }

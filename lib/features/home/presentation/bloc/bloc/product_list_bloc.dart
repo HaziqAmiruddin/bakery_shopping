@@ -36,22 +36,22 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
         getPopularProductsUseCase(),
       ]);
 
-      List<Product> onlineProducts = [];
-      try {
-        onlineProducts = await getOnlineProductsUseCase();
-      } catch (_) {
-        onlineProducts = [];
-      }
+      // List<Product> onlineProducts = [];
+      // try {
+      //   onlineProducts = await getOnlineProductsUseCase();
+      // } catch (_) {
+      //   onlineProducts = [];
+      // }
 
       emit(
         ProductListLoaded([
           ProductListSection(title: 'Featured products', products: results[0]),
           ProductListSection(title: 'New products', products: results[1]),
           ProductListSection(title: 'Popular products', products: results[2]),
-          ProductListSection(
-            title: titleOfTheListOfProducts[3],
-            products: onlineProducts,
-          ),
+          // ProductListSection(
+          //   title: titleOfTheListOfProducts[3],
+          //   products: onlineProducts,
+          // ),
         ]),
       );
     } catch (e) {

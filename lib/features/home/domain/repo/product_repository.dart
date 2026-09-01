@@ -6,5 +6,5 @@ abstract class ProductRepository {
   Future<List<Product>> getFeaturedProducts();
   Future<List<Product>> getNewProducts();
   Future<List<Product>> getPopularProducts();
-  Future<List<Product>> getOnlineProducts();
+  Future<List<Product>> getOnlineProducts({int skip = 0, int limit = 10});
 }

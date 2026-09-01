@@ -10,8 +10,11 @@ import 'package:shopping_app/features/cart/domain/usecase/update_cart_quantity_u
 import 'package:shopping_app/features/cart/domain/usecase/watch_cart_usecase.dart';
 import 'package:shopping_app/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:shopping_app/features/cart/presentation/bloc/cart_event.dart';
+import 'package:shopping_app/features/home/data/product_data/fav_remote_datasource.dart';
 import 'package:shopping_app/features/home/data/product_data/internet_data.dart';
+import 'package:shopping_app/features/home/data/repo/fav_repository_impl.dart';
 import 'package:shopping_app/features/home/data/repo/product_repo_impl.dart';
+import 'package:shopping_app/features/home/domain/repo/fav_repository.dart';
 import 'package:shopping_app/features/home/domain/repo/product_repository.dart';
 import 'package:shopping_app/features/home/domain/useccase/get_all_products_usecase.dart';
 import 'package:shopping_app/features/home/domain/useccase/get_featured_products_usecase.dart';
@@ -19,9 +22,13 @@ import 'package:shopping_app/features/home/domain/useccase/get_new_products_usec
 import 'package:shopping_app/features/home/domain/useccase/get_online_products_usecase.dart';
 import 'package:shopping_app/features/home/domain/useccase/get_popular_products_useccase.dart';
 import 'package:shopping_app/features/home/domain/useccase/get_product_by_category_usecase.dart';
+import 'package:shopping_app/features/home/domain/useccase/toggle_fav.dart';
 import 'package:shopping_app/features/home/presentation/bloc/bloc/category_overview_bloc.dart';
 import 'package:shopping_app/features/home/presentation/bloc/bloc/category_product_bloc.dart';
+import 'package:shopping_app/features/home/presentation/bloc/bloc/fav_bloc.dart';
+import 'package:shopping_app/features/home/presentation/bloc/bloc/online_products_bloc.dart';
 import 'package:shopping_app/features/home/presentation/bloc/bloc/product_list_bloc.dart';
+import 'package:shopping_app/features/home/presentation/bloc/event/fav_event.dart';
 import 'package:shopping_app/features/map/data/location_data_sources.dart';
 import 'package:shopping_app/features/map/domain/repository/location_repo.dart';
 import 'package:shopping_app/features/map/domain/usecases/get_address_from_coordinates.dart';
@@ -191,5 +198,36 @@ void setupDependencies() {
       updateCartQuantityUseCase: getIt<UpdateCartQuantityUseCase>(),
       removeFromCartUseCase: getIt<RemoveFromCartUseCase>(),
     )..add(WatchCartStarted()),
+  );
+
+  getIt.registerFactory<OnlineProductsBloc>(
+    () => OnlineProductsBloc(getIt<GetOnlineProductsUseCase>()),
+  );
+
+  getIt.registerLazySingleton<FavoriteRemoteDataSource>(
+    () => FavoriteRemoteDataSource(
+      firestore: getIt<FirebaseFirestore>(),
+      firebaseAuth: getIt<FirebaseAuth>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<FavoriteRepository>(
+    () => FavoriteRepositoryImpl(
+      remoteDataSource: getIt<FavoriteRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<WatchFavoritesUseCase>(
+    () => WatchFavoritesUseCase(getIt<FavoriteRepository>()),
+  );
+  getIt.registerLazySingleton<ToggleFavoriteUseCase>(
+    () => ToggleFavoriteUseCase(getIt<FavoriteRepository>()),
+  );
+
+  getIt.registerLazySingleton<FavoriteBloc>(
+    () => FavoriteBloc(
+      watchFavoritesUseCase: getIt<WatchFavoritesUseCase>(),
+      toggleFavoriteUseCase: getIt<ToggleFavoriteUseCase>(),
+    )..add(WatchFavoritesStarted()),
   );
 }

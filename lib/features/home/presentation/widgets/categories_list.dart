@@ -60,7 +60,6 @@ class CategoriesList extends StatelessWidget {
                   ),
                   child: Center(child: Image.asset(imagesOfCategories[index])),
                 ),
-                //Text(titlesOfCategories[index]),
                 Text(category),
               ],
             ),

@@ -30,8 +30,12 @@ class CartRemoteDataSource {
     );
   }
 
-  Future<void> addToCart(Product product) async {
-    final docRef = _cartRef.doc(product.id);
+  Future<void> addToCart(Product product, {String? weight}) async {
+    final docId = weight != null && weight.isNotEmpty
+        ? '${product.id}_$weight'
+        : product.id;
+
+    final docRef = _cartRef.doc(docId);
     final existing = await docRef.get();
 
     if (existing.exists) {
@@ -45,6 +49,7 @@ class CartRemoteDataSource {
           price: product.discountedPrice,
           originalPrice: product.price,
           quantity: 1,
+          weight: weight,
         ).toFirestore(),
       );
     }

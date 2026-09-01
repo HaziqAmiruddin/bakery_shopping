@@ -14,8 +14,8 @@ class CartRepositoryImpl implements CartRepository {
   Stream<List<CartItem>> watchCart() => _remoteDataSource.watchCart();
 
   @override
-  Future<void> addToCart(Product product) =>
-      _remoteDataSource.addToCart(product);
+  Future<void> addToCart(Product product, {String? weight}) =>
+      _remoteDataSource.addToCart(product, weight: weight);
 
   @override
   Future<void> updateQuantity(String productId, int quantity) =>

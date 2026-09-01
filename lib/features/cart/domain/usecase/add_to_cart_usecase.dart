@@ -5,5 +5,6 @@ class AddToCartUseCase {
   final CartRepository repository;
   AddToCartUseCase(this.repository);
 
-  Future<void> call(Product product) => repository.addToCart(product);
+  Future<void> call(Product product, {String? weight}) =>
+      repository.addToCart(product, weight: weight);
 }

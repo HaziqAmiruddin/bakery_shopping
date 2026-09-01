@@ -42,7 +42,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   ) async {
     // No emit here — Firestore write triggers the stream in
     // _onWatchCartStarted, which updates the UI automatically.
-    await addToCartUseCase(event.product);
+    await addToCartUseCase(event.product, weight: event.weight);
   }
 
   Future<void> _onQuantityChanged(

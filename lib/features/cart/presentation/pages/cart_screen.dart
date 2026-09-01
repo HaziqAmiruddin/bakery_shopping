@@ -9,7 +9,8 @@ import 'package:shopping_app/core/widgets/general_app_bar.dart';
 import 'package:shopping_app/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:shopping_app/features/cart/presentation/bloc/cart_state.dart';
 import 'package:shopping_app/features/cart/presentation/widgets/cart_item_tile.dart';
-import 'package:shopping_app/features/cart/presentation/widgets/cart_summary.dart';
+import 'package:shopping_app/features/cart/presentation/widgets/cart_summary.dart'
+    hide CartLoaded;
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -67,7 +68,10 @@ class CartScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                CartSummary(total: state.total),
+                CartSummary(
+                  total: state.total,
+                  totalSavings: state.totalSavings,
+                ),
               ],
             );
           }

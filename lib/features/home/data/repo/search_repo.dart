@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:shopping_app/features/home/data/product_data/internet_data.dart';
 import 'package:shopping_app/features/home/data/product_data/local_data.dart';
 import 'package:shopping_app/features/home/domain/entities/product_entities.dart';

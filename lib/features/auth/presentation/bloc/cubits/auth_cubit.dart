@@ -101,4 +101,32 @@ class AuthCubit extends Cubit<AuthState> {
       emit(Unauthenticated());
     }
   }
+
+  Future<void> updateProfilePhoto(String photoUrl) async {
+    if (_currentUser == null) return;
+    try {
+      final updatedUser = await authRepo.updateProfilePhoto(
+        _currentUser!.uid,
+        photoUrl,
+      );
+      _currentUser = updatedUser;
+      emit(Authenticated(updatedUser));
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  Future<void> updateProfileName(String name) async {
+    if (_currentUser == null) return;
+    try {
+      final updatedUser = await authRepo.updateProfileName(
+        _currentUser!.uid,
+        name,
+      );
+      _currentUser = updatedUser;
+      emit(Authenticated(updatedUser));
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
 }

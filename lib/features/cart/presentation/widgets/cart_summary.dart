@@ -7,7 +7,12 @@ import 'package:shopping_app/features/cart/presentation/bloc/cart_state.dart';
 
 class CartSummary extends StatelessWidget {
   final double total;
-  const CartSummary({super.key, required this.total});
+  final double totalSavings;
+  const CartSummary({
+    super.key,
+    required this.total,
+    required this.totalSavings,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +48,14 @@ class CartSummary extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                if (totalSavings > 0)
+                  Text(
+                    'You saved \$ ${totalSavings.toStringAsFixed(2)}',
+                    style: textOwn.labelSmall.copyWith(
+                      color: colorsOwn.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
               ],
             ),
           ),

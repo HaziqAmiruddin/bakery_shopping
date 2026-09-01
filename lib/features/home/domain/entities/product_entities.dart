@@ -59,10 +59,6 @@ class Product {
     this.isPopular = false,
   });
 
-  //   @override
-  //   List<Object?> get props => [id, name, image, category, price, rating, isFeatured, isNew, isPopular];
-  // }
-
   bool get isOnSale => discountPercentage > 0;
   double get discountedPrice =>
       isOnSale ? price - (price * discountPercentage / 100) : price;

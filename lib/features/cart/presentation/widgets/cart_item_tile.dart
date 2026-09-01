@@ -52,6 +52,11 @@ class CartItemTile extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
+                if (item.weight != null && item.weight!.isNotEmpty)
+                  Text(
+                    item.weight!,
+                    style: textOwn.labelSmall.copyWith(color: colorsOwn.gray4),
+                  ),
                 Row(
                   spacing: Dimens.smallPadding,
                   children: [

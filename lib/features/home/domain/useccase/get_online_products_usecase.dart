@@ -5,5 +5,7 @@ class GetOnlineProductsUseCase {
   final ProductRepository repository;
   GetOnlineProductsUseCase(this.repository);
 
-  Future<List<Product>> call() => repository.getOnlineProducts();
+  Future<List<Product>> call({int skip = 0, int limit = 10}) {
+    return repository.getOnlineProducts(skip: skip, limit: limit);
+  }
 }

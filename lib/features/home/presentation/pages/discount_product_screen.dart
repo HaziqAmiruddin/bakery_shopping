@@ -85,7 +85,7 @@ class DiscountProductScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(
-                                    '\$${product.price?.toStringAsFixed(2)}',
+                                    '\$${product.price.toStringAsFixed(2)}',
                                     style: const TextStyle(
                                       decoration: TextDecoration.lineThrough,
                                       color: Colors.grey,

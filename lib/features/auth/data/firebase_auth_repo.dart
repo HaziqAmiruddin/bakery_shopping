@@ -8,6 +8,25 @@ class FirebaseAuthRepo implements AuthRepo {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
+  Future<AppUser> _fetchOrCreateUserDoc(User firebaseUser) async {
+    final userRef = firebaseFirestore.collection('users').doc(firebaseUser.uid);
+    final snapshot = await userRef.get();
+
+    if (snapshot.exists) {
+      return AppUser.fromJson(snapshot.data()!);
+    }
+
+    final fallbackUser = AppUser(
+      uid: firebaseUser.uid,
+      email: firebaseUser.email ?? '',
+      name: firebaseUser.displayName ?? '',
+      photoUrl: firebaseUser.photoURL,
+    );
+
+    await userRef.set(fallbackUser.toJson());
+    return fallbackUser;
+  }
+
   @override
   Future<void> deleteAccount() async {
     try {
@@ -38,29 +57,50 @@ class FirebaseAuthRepo implements AuthRepo {
 
   @override
   Future<AppUser?> loginWithEmailPassword(String email, String password) async {
+    // try {
+    //   UserCredential userCredential = await firebaseAuth
+    //       .signInWithEmailAndPassword(email: email, password: password);
+
+    //   final userRef = firebaseFirestore
+    //       .collection('users')
+    //       .doc(userCredential.user!.uid);
+
+    //   await userRef.collection('notifications').add({
+    //     'type': 'login',
+    //     'title': 'Login Successful',
+    //     'message': 'You logged in successfully.',
+    //     'timestamp': FieldValue.serverTimestamp(),
+    //     'isRead': false,
+    //   });
+
+    //   AppUser user = AppUser(
+    //     uid: userCredential.user!.uid,
+    //     email: email,
+    //     name: '',
+    //   );
+
+    //   return user;
     try {
-      UserCredential userCredential = await firebaseAuth
-          .signInWithEmailAndPassword(email: email, password: password);
-
-      final userRef = firebaseFirestore
-          .collection('users')
-          .doc(userCredential.user!.uid);
-
-      await userRef.collection('notifications').add({
-        'type': 'login',
-        'title': 'Login Successful',
-        'message': 'You logged in successfully.',
-        'timestamp': FieldValue.serverTimestamp(),
-        'isRead': false,
-      });
-
-      AppUser user = AppUser(
-        uid: userCredential.user!.uid,
+      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
         email: email,
-        name: '',
+        password: password,
       );
 
-      return user;
+      final firebaseUser = userCredential.user!;
+
+      await firebaseFirestore
+          .collection('users')
+          .doc(firebaseUser.uid)
+          .collection('notifications')
+          .add({
+            'type': 'login',
+            'title': 'Login Successful',
+            'message': 'You logged in successfully.',
+            'timestamp': FieldValue.serverTimestamp(),
+            'isRead': false,
+          });
+
+      return _fetchOrCreateUserDoc(firebaseUser);
     } catch (e) {
       throw Exception('login failed: $e');
     }
@@ -78,13 +118,25 @@ class FirebaseAuthRepo implements AuthRepo {
     String password,
   ) async {
     try {
-      UserCredential userCredential = await firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      // UserCredential userCredential = await firebaseAuth
+      //     .createUserWithEmailAndPassword(email: email, password: password);
 
-      AppUser user = AppUser(
+      // AppUser user = AppUser(
+      //   uid: userCredential.user!.uid,
+      //   email: email,
+      //   name: name,
+      // );
+
+      final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = AppUser(
         uid: userCredential.user!.uid,
         email: email,
         name: name,
+        photoUrl: null,
       );
 
       await firebaseFirestore
@@ -110,35 +162,83 @@ class FirebaseAuthRepo implements AuthRepo {
 
   @override
   Future<AppUser?> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+    // try {
+    //   final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
+    //   if (gUser == null) return null;
+
+    //   final GoogleSignInAuthentication gAuth = await gUser.authentication;
+
+    //   final credential = GoogleAuthProvider.credential(
+    //     accessToken: gAuth.accessToken,
+    //     idToken: gAuth.idToken,
+    //   );
+
+    //   UserCredential userCredential = await firebaseAuth.signInWithCredential(
+    //     credential,
+    //   );
+
+    //   final firebaseUser = userCredential.user;
+
+    //   if (firebaseUser == null) return null;
+
+    //   final uid = firebaseUser.uid;
+
+    //   final userRef = firebaseFirestore.collection('users').doc(uid);
+
+    //   final userSnapshot = await userRef.get();
+
+    //   if (!userSnapshot.exists) {
+    //     await userRef.set({
+    //       'uid': uid,
+    //       'email': firebaseUser.email ?? '',
+    //       'name': firebaseUser.displayName ?? '',
+    //       'photoUrl': firebaseUser.photoURL ?? '',
+    //       'provider': 'google',
+    //       'createdAt': FieldValue.serverTimestamp(),
+    //     });
+    //   }
+
+    //   await userRef.collection('notifications').add({
+    //     'type': 'login',
+    //     'title': 'Login Successful',
+    //     'message': 'You logged in successfully.',
+    //     'timestamp': FieldValue.serverTimestamp(),
+    //     'isRead': false,
+    //   });
+
+    //   AppUser appUser = AppUser(
+    //     uid: uid,
+    //     email: firebaseUser.email ?? "",
+    //     name: firebaseUser.displayName ?? "",
+    //   );
+
+    //   return appUser;
+
+    try {
+      final gUser = await GoogleSignIn().signIn();
       if (gUser == null) return null;
 
-      final GoogleSignInAuthentication gAuth = await gUser.authentication;
-
+      final gAuth = await gUser.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: gAuth.accessToken,
         idToken: gAuth.idToken,
       );
 
-      UserCredential userCredential = await firebaseAuth.signInWithCredential(
+      final userCredential = await firebaseAuth.signInWithCredential(
         credential,
       );
-
       final firebaseUser = userCredential.user;
-
       if (firebaseUser == null) return null;
 
-      final uid = firebaseUser.uid;
-
-      final userRef = firebaseFirestore.collection('users').doc(uid);
-
+      final userRef = firebaseFirestore
+          .collection('users')
+          .doc(firebaseUser.uid);
       final userSnapshot = await userRef.get();
 
       if (!userSnapshot.exists) {
         await userRef.set({
-          'uid': uid,
+          'uid': firebaseUser.uid,
           'email': firebaseUser.email ?? '',
           'name': firebaseUser.displayName ?? '',
           'photoUrl': firebaseUser.photoURL ?? '',
@@ -155,16 +255,29 @@ class FirebaseAuthRepo implements AuthRepo {
         'isRead': false,
       });
 
-      AppUser appUser = AppUser(
-        uid: uid,
-        email: firebaseUser.email ?? "",
-        name: firebaseUser.displayName ?? "",
-      );
-
-      return appUser;
+      return _fetchOrCreateUserDoc(firebaseUser);
     } catch (e) {
       print('Google Sign In Error: $e');
       return null;
     }
+  }
+
+  @override
+  Future<AppUser> updateProfilePhoto(String uid, String photoUrl) async {
+    await firebaseFirestore.collection('users').doc(uid).update({
+      'photoUrl': photoUrl,
+    });
+
+    final snapshot = await firebaseFirestore.collection('users').doc(uid).get();
+    return AppUser.fromJson(snapshot.data()!);
+  }
+
+  // FirebaseAuthRepo
+  @override
+  Future<AppUser> updateProfileName(String uid, String name) async {
+    await firebaseFirestore.collection('users').doc(uid).update({'name': name});
+
+    final snapshot = await firebaseFirestore.collection('users').doc(uid).get();
+    return AppUser.fromJson(snapshot.data()!);
   }
 }
