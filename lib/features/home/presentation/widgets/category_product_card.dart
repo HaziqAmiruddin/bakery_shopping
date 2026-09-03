@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
 import 'package:shopping_app/core/widgets/app_button.dart';
@@ -73,7 +72,7 @@ class CategoryProductCard extends StatelessWidget {
             ],
           ),
           Text(
-            '\$ ${product.price?.toStringAsFixed(2)}',
+            '\$ ${product.price.toStringAsFixed(2)}',
             style: textOwn.labelLarge.copyWith(fontWeight: FontWeight.bold),
           ),
           SizedBox(

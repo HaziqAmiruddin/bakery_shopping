@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shopping_app/core/theme/presentation/bloc/theme_cubit.dart';
 import 'package:shopping_app/features/cart/data/cart_remote_data_source.dart';
 import 'package:shopping_app/features/cart/data/repo_imp/repository_implemenntation.dart';
 import 'package:shopping_app/features/cart/domain/repo/cart_repo.dart';
@@ -41,6 +42,24 @@ import 'package:shopping_app/features/notification/domain/repo/notification_repo
 import 'package:shopping_app/features/notification/domain/usecases/create_login_notification.dart';
 import 'package:shopping_app/features/notification/domain/usecases/get_notification.dart';
 import 'package:shopping_app/features/notification/presentation/bloc/notification_cubit.dart';
+import 'package:shopping_app/features/profile/data/address_remote_data_sources.dart';
+import 'package:shopping_app/features/profile/data/address_repo_impl.dart';
+import 'package:shopping_app/features/profile/data/feedback_remote_datasource.dart';
+import 'package:shopping_app/features/profile/data/feedback_repo_imp.dart';
+import 'package:shopping_app/features/profile/data/payment_method_api_service.dart';
+import 'package:shopping_app/features/profile/data/payment_method_repoimpl.dart';
+import 'package:shopping_app/features/profile/domain/address_repo.dart';
+import 'package:shopping_app/features/profile/domain/address_usecase.dart';
+import 'package:shopping_app/features/profile/domain/create_payment_sheet_param_usecase.dart';
+import 'package:shopping_app/features/profile/domain/delete_card_usecase.dart';
+import 'package:shopping_app/features/profile/domain/feedback_repo.dart';
+import 'package:shopping_app/features/profile/domain/feedback_usecase.dart';
+import 'package:shopping_app/features/profile/domain/get_save_card_usecase.dart';
+import 'package:shopping_app/features/profile/domain/payment_method_repo.dart';
+import 'package:shopping_app/features/profile/presentation/bloc/address_bloc.dart';
+import 'package:shopping_app/features/profile/presentation/bloc/address_event.dart';
+import 'package:shopping_app/features/profile/presentation/bloc/feedback_cubit.dart';
+import 'package:shopping_app/features/profile/presentation/bloc/payment_method_bloc.dart';
 
 final getIt = GetIt.instance;
 
@@ -197,7 +216,8 @@ void setupDependencies() {
       addToCartUseCase: getIt<AddToCartUseCase>(),
       updateCartQuantityUseCase: getIt<UpdateCartQuantityUseCase>(),
       removeFromCartUseCase: getIt<RemoveFromCartUseCase>(),
-    )..add(WatchCartStarted()),
+    ),
+    //..add(WatchCartStarted()),
   );
 
   getIt.registerFactory<OnlineProductsBloc>(
@@ -229,5 +249,92 @@ void setupDependencies() {
       watchFavoritesUseCase: getIt<WatchFavoritesUseCase>(),
       toggleFavoriteUseCase: getIt<ToggleFavoriteUseCase>(),
     )..add(WatchFavoritesStarted()),
+  );
+
+  getIt.registerLazySingleton<PaymentMethodApiService>(
+    () => PaymentMethodApiService(),
+  );
+
+  getIt.registerLazySingleton<PaymentMethodRepository>(
+    () => PaymentMethodRepositoryImpl(
+      apiService: getIt<PaymentMethodApiService>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetSavedCardsUseCase>(
+    () => GetSavedCardsUseCase(getIt<PaymentMethodRepository>()),
+  );
+  getIt.registerLazySingleton<CreatePaymentSheetParamsUseCase>(
+    () => CreatePaymentSheetParamsUseCase(getIt<PaymentMethodRepository>()),
+  );
+
+  getIt.registerLazySingleton<DeleteCardUseCase>(
+    () => DeleteCardUseCase(getIt<PaymentMethodRepository>()),
+  );
+
+  getIt.registerFactory<PaymentMethodBloc>(
+    () => PaymentMethodBloc(
+      getSavedCardsUseCase: getIt<GetSavedCardsUseCase>(),
+      deleteCardUseCase: getIt<DeleteCardUseCase>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<AddressRemoteDataSource>(
+    () => AddressRemoteDataSource(
+      firestore: getIt<FirebaseFirestore>(),
+      firebaseAuth: getIt<FirebaseAuth>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<AddressRepository>(
+    () => AddressRepositoryImpl(
+      remoteDataSource: getIt<AddressRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<WatchAddressesUseCase>(
+    () => WatchAddressesUseCase(getIt<AddressRepository>()),
+  );
+  getIt.registerLazySingleton<AddAddressUseCase>(
+    () => AddAddressUseCase(getIt<AddressRepository>()),
+  );
+  getIt.registerLazySingleton<UpdateAddressUseCase>(
+    () => UpdateAddressUseCase(getIt<AddressRepository>()),
+  );
+  getIt.registerLazySingleton<DeleteAddressUseCase>(
+    () => DeleteAddressUseCase(getIt<AddressRepository>()),
+  );
+  getIt.registerLazySingleton<SetDefaultAddressUseCase>(
+    () => SetDefaultAddressUseCase(getIt<AddressRepository>()),
+  );
+
+  getIt.registerLazySingleton<AddressBloc>(
+    () => AddressBloc(
+      watchAddressesUseCase: getIt<WatchAddressesUseCase>(),
+      addAddressUseCase: getIt<AddAddressUseCase>(),
+      updateAddressUseCase: getIt<UpdateAddressUseCase>(),
+      deleteAddressUseCase: getIt<DeleteAddressUseCase>(),
+      setDefaultAddressUseCase: getIt<SetDefaultAddressUseCase>(),
+    )..add(WatchAddressesStarted()),
+  );
+
+  getIt.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
+
+  getIt.registerLazySingleton<FeedbackRemoteDataSource>(
+    () => FeedbackRemoteDataSource(firestore: getIt<FirebaseFirestore>()),
+  );
+
+  getIt.registerLazySingleton<FeedbackRepository>(
+    () => FeedbackRepositoryImpl(
+      remoteDataSource: getIt<FeedbackRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<SubmitFeedbackUseCase>(
+    () => SubmitFeedbackUseCase(getIt<FeedbackRepository>()),
+  );
+
+  getIt.registerFactory<FeedbackCubit>(
+    () => FeedbackCubit(submitFeedbackUseCase: getIt<SubmitFeedbackUseCase>()),
   );
 }

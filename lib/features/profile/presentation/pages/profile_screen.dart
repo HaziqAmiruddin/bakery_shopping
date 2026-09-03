@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shopping_app/core/gen/assets.gen.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
+import 'package:shopping_app/core/theme/presentation/bloc/theme_cubit.dart';
+import 'package:shopping_app/core/utils/app_navigator.dart';
 import 'package:shopping_app/core/utils/check_theme_status.dart';
 import 'package:shopping_app/core/widgets/app_list_tile.dart';
 import 'package:shopping_app/core/widgets/app_scaffold.dart';
@@ -15,6 +17,9 @@ import 'package:shopping_app/core/widgets/user_profile_image_widget.dart';
 import 'package:shopping_app/features/auth/domain/entities/app_user.dart';
 import 'package:shopping_app/features/auth/presentation/bloc/cubits/auth_cubit.dart';
 import 'package:shopping_app/features/auth/presentation/bloc/cubits/auth_state.dart';
+import 'package:shopping_app/features/profile/presentation/pages/address_list_screenn.dart';
+import 'package:shopping_app/features/profile/presentation/pages/feedback_screen.dart';
+import 'package:shopping_app/features/profile/presentation/widgets/payment_method_screen.dart';
 import 'package:shopping_app/features/profile/utils/cloudinary_uploader.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -199,13 +204,17 @@ class ProfileScreen extends StatelessWidget {
                   spacing: Dimens.largePadding,
                   children: [
                     AppListTile(
-                      onTap: () {},
+                      onTap: () {
+                        appPush(context, const PaymentMethodScreen());
+                      },
                       title: 'Payment method',
                       leadingIconPath: Assets.icons.cardPos,
                       padding: EdgeInsets.zero,
                     ),
                     AppListTile(
-                      onTap: () {},
+                      onTap: () {
+                        appPush(context, const AddressListScreen());
+                      },
                       title: 'Addresses',
                       leadingIconPath: Assets.icons.location,
                       padding: EdgeInsets.zero,
@@ -214,13 +223,24 @@ class ProfileScreen extends StatelessWidget {
                       onTap: () {},
                       title: 'Dark theme',
                       leadingIconPath: Assets.icons.moon,
-                      trailing: Transform.scale(
-                        scale: 0.7,
-                        child: CupertinoSwitch(
-                          value: checkDarkMode(context),
-                          onChanged: (final value) {},
-                          activeTrackColor: appColors.primary,
-                        ),
+                      trailing: BlocBuilder<ThemeCubit, ThemeMode>(
+                        builder: (context, themeMode) {
+                          final isDark =
+                              themeMode == ThemeMode.dark ||
+                              (themeMode == ThemeMode.system &&
+                                  checkDarkMode(context));
+
+                          return Transform.scale(
+                            scale: 0.7,
+                            child: CupertinoSwitch(
+                              value: isDark,
+                              onChanged: (value) {
+                                context.read<ThemeCubit>().toggleTheme(value);
+                              },
+                              activeTrackColor: appColors.primary,
+                            ),
+                          );
+                        },
                       ),
                       padding: EdgeInsets.zero,
                     ),
@@ -237,7 +257,9 @@ class ProfileScreen extends StatelessWidget {
                   spacing: Dimens.largePadding,
                   children: [
                     AppListTile(
-                      onTap: () {},
+                      onTap: () {
+                        appPush(context, const FeedbackScreen());
+                      },
                       title: 'Feedback',
                       leadingIconPath: Assets.icons.noteText,
                       padding: EdgeInsets.zero,

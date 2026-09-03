@@ -84,7 +84,7 @@ class CartItemTile extends StatelessWidget {
               _QuantityButton(
                 icon: Icons.remove,
                 onTap: () => context.read<CartBloc>().add(
-                  CartQuantityChanged(item.productId, item.quantity - 1),
+                  CartQuantityChanged(item.cartDocId, item.quantity - 1),
                 ),
               ),
               SizedBox(
@@ -98,7 +98,7 @@ class CartItemTile extends StatelessWidget {
               _QuantityButton(
                 icon: Icons.add,
                 onTap: () => context.read<CartBloc>().add(
-                  CartQuantityChanged(item.productId, item.quantity + 1),
+                  CartQuantityChanged(item.cartDocId, item.quantity + 1),
                 ),
               ),
             ],
@@ -106,7 +106,7 @@ class CartItemTile extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.delete_outline, color: colorsOwn.gray4),
             onPressed: () =>
-                context.read<CartBloc>().add(CartItemRemoved(item.productId)),
+                context.read<CartBloc>().add(CartItemRemoved(item.cartDocId)),
           ),
         ],
       ),

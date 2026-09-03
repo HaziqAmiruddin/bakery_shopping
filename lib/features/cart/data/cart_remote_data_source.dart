@@ -22,12 +22,30 @@ class CartRemoteDataSource {
   CollectionReference<Map<String, dynamic>> get _cartRef =>
       _firestore.collection('users').doc(_uid).collection('cart');
 
+  // Stream<List<CartItem>> watchCart() {
+  //   return _cartRef.snapshots().map(
+  //     (snapshot) => snapshot.docs
+  //         .map((doc) => CartItem.fromFirestore(doc.data()))
+  //         .toList(),
+  //   );
+  // }
+
   Stream<List<CartItem>> watchCart() {
-    return _cartRef.snapshots().map(
-      (snapshot) => snapshot.docs
-          .map((doc) => CartItem.fromFirestore(doc.data()))
-          .toList(),
-    );
+    final user = _firebaseAuth.currentUser;
+    if (user == null) {
+      return Stream.value([]); // empty cart instead of crashing the stream
+    }
+
+    return _firestore
+        .collection('users')
+        .doc(user.uid)
+        .collection('cart')
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => CartItem.fromFirestore(doc.data()))
+              .toList(),
+        );
   }
 
   Future<void> addToCart(Product product, {String? weight}) async {
@@ -55,15 +73,15 @@ class CartRemoteDataSource {
     }
   }
 
-  Future<void> updateQuantity(String productId, int quantity) async {
+  Future<void> updateQuantity(String cartDocId, int quantity) async {
     if (quantity <= 0) {
-      await removeFromCart(productId);
+      await removeFromCart(cartDocId);
       return;
     }
-    await _cartRef.doc(productId).update({'quantity': quantity});
+    await _cartRef.doc(cartDocId).update({'quantity': quantity});
   }
 
-  Future<void> removeFromCart(String productId) async {
-    await _cartRef.doc(productId).delete();
+  Future<void> removeFromCart(String cartDocId) async {
+    await _cartRef.doc(cartDocId).delete();
   }
 }

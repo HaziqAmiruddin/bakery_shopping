@@ -1,7 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopping_app/core/inject/injection.dart';
 import 'package:shopping_app/features/auth/domain/entities/app_user.dart';
 import 'package:shopping_app/features/auth/domain/repo/auth_repo.dart';
 import 'package:shopping_app/features/auth/presentation/bloc/cubits/auth_state.dart';
+import 'package:shopping_app/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:shopping_app/features/cart/presentation/bloc/cart_event.dart';
+import 'package:shopping_app/features/home/presentation/bloc/bloc/fav_bloc.dart';
+import 'package:shopping_app/features/home/presentation/bloc/event/fav_event.dart';
+import 'package:shopping_app/features/profile/presentation/bloc/address_bloc.dart';
+import 'package:shopping_app/features/profile/presentation/bloc/address_event.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepo authRepo;
@@ -19,6 +26,7 @@ class AuthCubit extends Cubit<AuthState> {
     if (user != null) {
       _currentUser = user;
       emit(Authenticated(user));
+      _startUserDataStreams();
     } else {
       emit(Unauthenticated());
     }
@@ -33,6 +41,7 @@ class AuthCubit extends Cubit<AuthState> {
       if (user != null) {
         _currentUser = user;
         emit(Authenticated(user));
+        _startUserDataStreams();
       } else {
         emit(Unauthenticated());
       }
@@ -51,6 +60,7 @@ class AuthCubit extends Cubit<AuthState> {
       if (user != null) {
         _currentUser = user;
         emit(Authenticated(user));
+        _startUserDataStreams();
       } else {
         emit(Unauthenticated());
       }
@@ -93,6 +103,7 @@ class AuthCubit extends Cubit<AuthState> {
       if (user != null) {
         _currentUser = user;
         emit(Authenticated(user));
+        _startUserDataStreams();
       } else {
         emit(Unauthenticated());
       }
@@ -129,4 +140,10 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthError(e.toString()));
     }
   }
+}
+
+void _startUserDataStreams() {
+  getIt<CartBloc>().add(WatchCartStarted());
+  getIt<FavoriteBloc>().add(WatchFavoritesStarted());
+  getIt<AddressBloc>().add(WatchAddressesStarted());
 }

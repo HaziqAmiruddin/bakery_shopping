@@ -1,15 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shopping_app/core/API/api_key.dart';
 import 'package:shopping_app/features/home/domain/entities/product_entities.dart';
 
 class ProductApiService {
-  static const _baseUrl = 'https://dummyjson.com/products';
-
   Future<List<Product>> search(String query) async {
     if (query.trim().isEmpty) return [];
 
     final uri = Uri.parse(
-      '$_baseUrl/search',
+      '${ApiKey.dummyJsonUrl}/search',
     ).replace(queryParameters: {'q': query, 'limit': '10'});
 
     final response = await http.get(uri);
@@ -29,7 +28,7 @@ class ProductApiService {
 
   Future<List<Product>> getAllProducts({int limit = 10, int skip = 0}) async {
     final uri = Uri.parse(
-      _baseUrl,
+      '${ApiKey.dummyJsonUrl}/',
     ).replace(queryParameters: {'limit': '$limit', 'skip': '$skip'});
 
     final response = await http.get(uri);
