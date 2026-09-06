@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:shopping_app/core/API/api_key.dart';
 
 class CloudinaryUploader {
-  static const _cloudName = 'flc0dq3c'; // from Cloudinary dashboard
+  static const _cloudName =
+      ApiKey.cloudinaryCloudName; // from Cloudinary dashboard
   static const _uploadPreset =
       'shopping_app_profile_photo'; // your unsigned preset
 

@@ -2,27 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shopping_app/core/theme/presentation/bloc/theme_cubit.dart';
-import 'package:shopping_app/features/cart/data/cart_remote_data_source.dart';
+import 'package:shopping_app/features/cart/data/the_data/cart_remote_data_source.dart';
 import 'package:shopping_app/features/cart/data/repo_imp/repository_implemenntation.dart';
 import 'package:shopping_app/features/cart/domain/repo/cart_repo.dart';
-import 'package:shopping_app/features/cart/domain/usecase/add_to_cart_usecase.dart';
-import 'package:shopping_app/features/cart/domain/usecase/remove_from_cart_usecase.dart';
-import 'package:shopping_app/features/cart/domain/usecase/update_cart_quantity_usecase.dart';
-import 'package:shopping_app/features/cart/domain/usecase/watch_cart_usecase.dart';
+import 'package:shopping_app/features/cart/domain/usecase/cart_usecases.dart';
 import 'package:shopping_app/features/cart/presentation/bloc/cart_bloc.dart';
-import 'package:shopping_app/features/cart/presentation/bloc/cart_event.dart';
 import 'package:shopping_app/features/home/data/product_data/fav_remote_datasource.dart';
 import 'package:shopping_app/features/home/data/product_data/internet_data.dart';
 import 'package:shopping_app/features/home/data/repo/fav_repository_impl.dart';
 import 'package:shopping_app/features/home/data/repo/product_repo_impl.dart';
 import 'package:shopping_app/features/home/domain/repo/fav_repository.dart';
 import 'package:shopping_app/features/home/domain/repo/product_repository.dart';
-import 'package:shopping_app/features/home/domain/useccase/get_all_products_usecase.dart';
-import 'package:shopping_app/features/home/domain/useccase/get_featured_products_usecase.dart';
-import 'package:shopping_app/features/home/domain/useccase/get_new_products_usecase.dart';
-import 'package:shopping_app/features/home/domain/useccase/get_online_products_usecase.dart';
-import 'package:shopping_app/features/home/domain/useccase/get_popular_products_useccase.dart';
-import 'package:shopping_app/features/home/domain/useccase/get_product_by_category_usecase.dart';
+import 'package:shopping_app/features/home/domain/useccase/get_product_usecase.dart';
 import 'package:shopping_app/features/home/domain/useccase/toggle_fav.dart';
 import 'package:shopping_app/features/home/presentation/bloc/bloc/category_overview_bloc.dart';
 import 'package:shopping_app/features/home/presentation/bloc/bloc/category_product_bloc.dart';
@@ -42,24 +33,27 @@ import 'package:shopping_app/features/notification/domain/repo/notification_repo
 import 'package:shopping_app/features/notification/domain/usecases/create_login_notification.dart';
 import 'package:shopping_app/features/notification/domain/usecases/get_notification.dart';
 import 'package:shopping_app/features/notification/presentation/bloc/notification_cubit.dart';
-import 'package:shopping_app/features/profile/data/address_remote_data_sources.dart';
-import 'package:shopping_app/features/profile/data/address_repo_impl.dart';
-import 'package:shopping_app/features/profile/data/feedback_remote_datasource.dart';
-import 'package:shopping_app/features/profile/data/feedback_repo_imp.dart';
-import 'package:shopping_app/features/profile/data/payment_method_api_service.dart';
-import 'package:shopping_app/features/profile/data/payment_method_repoimpl.dart';
-import 'package:shopping_app/features/profile/domain/address_repo.dart';
-import 'package:shopping_app/features/profile/domain/address_usecase.dart';
-import 'package:shopping_app/features/profile/domain/create_payment_sheet_param_usecase.dart';
-import 'package:shopping_app/features/profile/domain/delete_card_usecase.dart';
-import 'package:shopping_app/features/profile/domain/feedback_repo.dart';
-import 'package:shopping_app/features/profile/domain/feedback_usecase.dart';
-import 'package:shopping_app/features/profile/domain/get_save_card_usecase.dart';
-import 'package:shopping_app/features/profile/domain/payment_method_repo.dart';
-import 'package:shopping_app/features/profile/presentation/bloc/address_bloc.dart';
-import 'package:shopping_app/features/profile/presentation/bloc/address_event.dart';
-import 'package:shopping_app/features/profile/presentation/bloc/feedback_cubit.dart';
-import 'package:shopping_app/features/profile/presentation/bloc/payment_method_bloc.dart';
+import 'package:shopping_app/features/address/data/address_remote_data_sources.dart';
+import 'package:shopping_app/features/address/data/address_repo_impl.dart';
+import 'package:shopping_app/features/helpsupport/data/chat_data.dart';
+import 'package:shopping_app/features/helpsupport/data/chat_repo_imp.dart';
+import 'package:shopping_app/features/feedback/data/feedback_remote_datasource.dart';
+import 'package:shopping_app/features/feedback/data/feedback_repo_imp.dart';
+import 'package:shopping_app/features/payment_stripe/data/payment_method_api_service.dart';
+import 'package:shopping_app/features/payment_stripe/data/payment_method_repoimpl.dart';
+import 'package:shopping_app/features/address/domain/address_repo.dart';
+import 'package:shopping_app/features/address/domain/address_usecase.dart';
+import 'package:shopping_app/features/helpsupport/domain/chat_repo.dart';
+import 'package:shopping_app/features/helpsupport/domain/chat_usecase.dart';
+import 'package:shopping_app/features/payment_stripe/domain/card_stripe_usecase.dart';
+import 'package:shopping_app/features/feedback/domain/feedback_repo.dart';
+import 'package:shopping_app/features/feedback/domain/feedback_usecase.dart';
+import 'package:shopping_app/features/payment_stripe/domain/payment_method_repo.dart';
+import 'package:shopping_app/features/address/presentation/bloc/address_bloc.dart';
+import 'package:shopping_app/features/address/presentation/bloc/address_event.dart';
+import 'package:shopping_app/features/helpsupport/presentation/bloc/chat_cubit.dart';
+import 'package:shopping_app/features/feedback/presentation/bloc/feedback_cubit.dart';
+import 'package:shopping_app/features/payment_stripe/presentation/bloc/payment_method_bloc.dart';
 
 final getIt = GetIt.instance;
 
@@ -336,5 +330,23 @@ void setupDependencies() {
 
   getIt.registerFactory<FeedbackCubit>(
     () => FeedbackCubit(submitFeedbackUseCase: getIt<SubmitFeedbackUseCase>()),
+  );
+
+  getIt.registerLazySingleton<SupportChatApiService>(
+    () => SupportChatApiService(),
+  );
+
+  getIt.registerLazySingleton<SupportChatRepository>(
+    () => SupportChatRepositoryImpl(apiService: getIt<SupportChatApiService>()),
+  );
+
+  getIt.registerLazySingleton<SendSupportMessageUseCase>(
+    () => SendSupportMessageUseCase(getIt<SupportChatRepository>()),
+  );
+
+  getIt.registerFactory<SupportChatCubit>(
+    () => SupportChatCubit(
+      sendSupportMessageUseCase: getIt<SendSupportMessageUseCase>(),
+    ),
   );
 }

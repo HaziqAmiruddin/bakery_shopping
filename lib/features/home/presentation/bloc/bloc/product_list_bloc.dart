@@ -1,11 +1,6 @@
 // presentation/bloc/product_list/product_list_bloc.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopping_app/features/home/data/product_data/local_data.dart';
-import 'package:shopping_app/features/home/domain/entities/product_entities.dart';
-import 'package:shopping_app/features/home/domain/useccase/get_featured_products_usecase.dart';
-import 'package:shopping_app/features/home/domain/useccase/get_new_products_usecase.dart';
-import 'package:shopping_app/features/home/domain/useccase/get_online_products_usecase.dart';
-import 'package:shopping_app/features/home/domain/useccase/get_popular_products_useccase.dart';
+import 'package:shopping_app/features/home/domain/useccase/get_product_usecase.dart';
 import 'package:shopping_app/features/home/presentation/bloc/event/product_list_event.dart';
 import 'package:shopping_app/features/home/presentation/bloc/state/product_list_state.dart';
 

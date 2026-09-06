@@ -7,8 +7,8 @@ import 'package:shopping_app/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:shopping_app/features/cart/presentation/bloc/cart_event.dart';
 import 'package:shopping_app/features/home/presentation/bloc/bloc/fav_bloc.dart';
 import 'package:shopping_app/features/home/presentation/bloc/event/fav_event.dart';
-import 'package:shopping_app/features/profile/presentation/bloc/address_bloc.dart';
-import 'package:shopping_app/features/profile/presentation/bloc/address_event.dart';
+import 'package:shopping_app/features/address/presentation/bloc/address_bloc.dart';
+import 'package:shopping_app/features/address/presentation/bloc/address_event.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepo authRepo;

@@ -10,7 +10,7 @@ import 'package:shopping_app/features/home/presentation/bloc/bloc/fav_bloc.dart'
 import 'package:shopping_app/features/map/presentation/bloc/location_bloc.dart';
 import 'package:shopping_app/features/map/presentation/bloc/location_event.dart';
 import 'package:shopping_app/features/notification/presentation/bloc/notification_cubit.dart';
-import 'package:shopping_app/features/profile/presentation/bloc/address_bloc.dart';
+import 'package:shopping_app/features/address/presentation/bloc/address_bloc.dart';
 import 'package:shopping_app/features/splash/presentation/splash_screen.dart';
 
 class ShoppingApp extends StatelessWidget {

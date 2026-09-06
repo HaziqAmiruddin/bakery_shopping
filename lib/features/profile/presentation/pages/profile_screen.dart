@@ -17,9 +17,10 @@ import 'package:shopping_app/core/widgets/user_profile_image_widget.dart';
 import 'package:shopping_app/features/auth/domain/entities/app_user.dart';
 import 'package:shopping_app/features/auth/presentation/bloc/cubits/auth_cubit.dart';
 import 'package:shopping_app/features/auth/presentation/bloc/cubits/auth_state.dart';
-import 'package:shopping_app/features/profile/presentation/pages/address_list_screenn.dart';
-import 'package:shopping_app/features/profile/presentation/pages/feedback_screen.dart';
-import 'package:shopping_app/features/profile/presentation/widgets/payment_method_screen.dart';
+import 'package:shopping_app/features/address/presentation/pages/address_list_screenn.dart';
+import 'package:shopping_app/features/feedback/presentation/pages/feedback_screen.dart';
+import 'package:shopping_app/features/helpsupport/presentation/pages/help_support_chat_screen.dart';
+import 'package:shopping_app/features/payment_stripe/presentation/pages/payment_method_screen.dart';
 import 'package:shopping_app/features/profile/utils/cloudinary_uploader.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -265,7 +266,9 @@ class ProfileScreen extends StatelessWidget {
                       padding: EdgeInsets.zero,
                     ),
                     AppListTile(
-                      onTap: () {},
+                      onTap: () {
+                        appPush(context, const HelpSupportScreen());
+                      },
                       title: 'Help and Support',
                       leadingIconPath: Assets.icons.infoCircle,
                       padding: EdgeInsets.zero,

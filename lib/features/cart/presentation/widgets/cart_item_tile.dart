@@ -5,6 +5,7 @@ import 'package:shopping_app/core/theme/dimens.dart';
 import 'package:shopping_app/features/cart/domain/entities/cart_item.dart';
 import 'package:shopping_app/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:shopping_app/features/cart/presentation/bloc/cart_event.dart';
+import 'package:shopping_app/features/cart/presentation/widgets/quantity_button.dart';
 import 'package:shopping_app/features/home/presentation/widgets/product_image.dart';
 
 class CartItemTile extends StatelessWidget {
@@ -81,7 +82,7 @@ class CartItemTile extends StatelessWidget {
           ),
           Row(
             children: [
-              _QuantityButton(
+              QuantityButton(
                 icon: Icons.remove,
                 onTap: () => context.read<CartBloc>().add(
                   CartQuantityChanged(item.cartDocId, item.quantity - 1),
@@ -95,7 +96,7 @@ class CartItemTile extends StatelessWidget {
                   style: textOwn.labelMedium,
                 ),
               ),
-              _QuantityButton(
+              QuantityButton(
                 icon: Icons.add,
                 onTap: () => context.read<CartBloc>().add(
                   CartQuantityChanged(item.cartDocId, item.quantity + 1),
@@ -109,29 +110,6 @@ class CartItemTile extends StatelessWidget {
                 context.read<CartBloc>().add(CartItemRemoved(item.cartDocId)),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _QuantityButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onTap;
-  const _QuantityButton({required this.icon, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(100),
-      child: Container(
-        width: 24,
-        height: 24,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: context.theme.appColors.gray4),
-        ),
-        child: Icon(icon, size: 14),
       ),
     );
   }

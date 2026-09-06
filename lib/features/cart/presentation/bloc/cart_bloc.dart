@@ -1,9 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_app/features/cart/domain/entities/cart_item.dart';
-import 'package:shopping_app/features/cart/domain/usecase/add_to_cart_usecase.dart';
-import 'package:shopping_app/features/cart/domain/usecase/remove_from_cart_usecase.dart';
-import 'package:shopping_app/features/cart/domain/usecase/update_cart_quantity_usecase.dart';
-import 'package:shopping_app/features/cart/domain/usecase/watch_cart_usecase.dart';
+import 'package:shopping_app/features/cart/domain/usecase/cart_usecases.dart';
 import 'package:shopping_app/features/cart/presentation/bloc/cart_event.dart';
 import 'package:shopping_app/features/cart/presentation/bloc/cart_state.dart';
 
