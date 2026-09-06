@@ -42,4 +42,23 @@ class PaymentMethodApiService {
       throw Exception('Failed to delete card: ${response.body}');
     }
   }
+
+  Future<Map<String, dynamic>> createPaymentIntent({
+    required String uid,
+    required double amount, // in RM, e.g. 25.00
+  }) async {
+    final amountInSen = (amount * 100).round();
+
+    final response = await http.post(
+      Uri.parse('${ApiKey.baseUrl}/create-payment-intent'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'uid': uid, 'amount': amountInSen}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to create payment intent: ${response.body}');
+    }
+
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
 }

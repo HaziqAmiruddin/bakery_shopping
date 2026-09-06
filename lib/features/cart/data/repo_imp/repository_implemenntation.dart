@@ -1,4 +1,3 @@
-// data/repositories/cart_repository_impl.dart
 import 'package:shopping_app/features/cart/data/the_data/cart_remote_data_source.dart';
 import 'package:shopping_app/features/cart/domain/entities/cart_item.dart';
 import 'package:shopping_app/features/cart/domain/repo/cart_repo.dart';
@@ -24,4 +23,7 @@ class CartRepositoryImpl implements CartRepository {
   @override
   Future<void> removeFromCart(String productId) =>
       _remoteDataSource.removeFromCart(productId);
+
+  @override
+  Future<void> clearCart() => _remoteDataSource.clearCart();
 }

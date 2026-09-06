@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/core/theme/app_theme.dart';
 import 'package:shopping_app/core/theme/dimens.dart';
+import 'package:shopping_app/core/utils/app_navigator.dart';
 import 'package:shopping_app/core/widgets/app_button.dart';
 import 'package:shopping_app/features/cart/domain/entities/cart_item.dart';
 import 'package:shopping_app/features/cart/presentation/bloc/cart_state.dart';
+import 'package:shopping_app/features/cart/presentation/pages/checkout_screen.dart';
 
 class CartSummary extends StatelessWidget {
   final double total;
@@ -65,7 +67,7 @@ class CartSummary extends StatelessWidget {
             child: AppButton(
               title: "Pay",
               onPressed: () {
-                // Checkout flow — TODO next
+                appPush(context, const CheckoutScreen());
               },
               margin: EdgeInsets.zero,
             ),

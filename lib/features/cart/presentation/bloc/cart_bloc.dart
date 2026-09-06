@@ -9,17 +9,20 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final AddToCartUseCase addToCartUseCase;
   final UpdateCartQuantityUseCase updateCartQuantityUseCase;
   final RemoveFromCartUseCase removeFromCartUseCase;
+  final ClearCartUseCase clearCartUseCase;
 
   CartBloc({
     required this.watchCartUseCase,
     required this.addToCartUseCase,
     required this.updateCartQuantityUseCase,
     required this.removeFromCartUseCase,
+    required this.clearCartUseCase,
   }) : super(CartLoading()) {
     on<WatchCartStarted>(_onWatchCartStarted);
     on<AddToCartPressed>(_onAddToCartPressed);
     on<CartQuantityChanged>(_onQuantityChanged);
     on<CartItemRemoved>(_onItemRemoved);
+    on<CartCleared>(_onCartCleared);
   }
 
   Future<void> _onWatchCartStarted(
@@ -54,5 +57,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     Emitter<CartState> emit,
   ) async {
     await removeFromCartUseCase(event.productId);
+  }
+
+  Future<void> _onCartCleared(
+    CartCleared event,
+    Emitter<CartState> emit,
+  ) async {
+    await clearCartUseCase();
+    // No manual emit — watchCart's stream picks up the now-empty collection automatically.
   }
 }

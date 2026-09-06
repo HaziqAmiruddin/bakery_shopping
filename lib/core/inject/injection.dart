@@ -54,6 +54,7 @@ import 'package:shopping_app/features/address/presentation/bloc/address_event.da
 import 'package:shopping_app/features/helpsupport/presentation/bloc/chat_cubit.dart';
 import 'package:shopping_app/features/feedback/presentation/bloc/feedback_cubit.dart';
 import 'package:shopping_app/features/payment_stripe/presentation/bloc/payment_method_bloc.dart';
+import 'package:shopping_app/features/payment_xendit/data/xendit_api_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -201,6 +202,10 @@ void setupDependencies() {
     () => RemoveFromCartUseCase(getIt<CartRepository>()),
   );
 
+  getIt.registerLazySingleton<ClearCartUseCase>(
+    () => ClearCartUseCase(getIt<CartRepository>()),
+  );
+
   // Bloc — this one should be a singleton, not a factory, since the cart
   // needs to persist and stay subscribed across the whole app (badge icon,
   // product cards, cart screen all share the same live state).
@@ -210,6 +215,7 @@ void setupDependencies() {
       addToCartUseCase: getIt<AddToCartUseCase>(),
       updateCartQuantityUseCase: getIt<UpdateCartQuantityUseCase>(),
       removeFromCartUseCase: getIt<RemoveFromCartUseCase>(),
+      clearCartUseCase: getIt<ClearCartUseCase>(),
     ),
     //..add(WatchCartStarted()),
   );
@@ -349,4 +355,6 @@ void setupDependencies() {
       sendSupportMessageUseCase: getIt<SendSupportMessageUseCase>(),
     ),
   );
+
+  getIt.registerLazySingleton<XenditApiService>(() => XenditApiService());
 }

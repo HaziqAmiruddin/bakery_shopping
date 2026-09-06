@@ -32,3 +32,9 @@ class WatchCartUseCase {
 
   Stream<List<CartItem>> call() => repository.watchCart();
 }
+
+class ClearCartUseCase {
+  final CartRepository repository;
+  ClearCartUseCase(this.repository);
+  Future<void> call() => repository.clearCart();
+}

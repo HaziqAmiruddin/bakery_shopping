@@ -84,4 +84,13 @@ class CartRemoteDataSource {
   Future<void> removeFromCart(String cartDocId) async {
     await _cartRef.doc(cartDocId).delete();
   }
+
+  Future<void> clearCart() async {
+    final snapshot = await _cartRef.get();
+    final batch = _firestore.batch();
+    for (final doc in snapshot.docs) {
+      batch.delete(doc.reference);
+    }
+    await batch.commit();
+  }
 }

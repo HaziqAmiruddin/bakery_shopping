@@ -6,4 +6,5 @@ abstract class CartRepository {
   Future<void> addToCart(Product product, {String? weight});
   Future<void> updateQuantity(String productId, int quantity);
   Future<void> removeFromCart(String productId);
+  Future<void> clearCart();
 }
